@@ -6,35 +6,27 @@ socket.on("connect", ()=>{
 
 
 // -----------------------------------------------------------------------------
-let CanvasContainer = null;
-let PixiApp = null;
-const CharacterSpritesNames = [];
-
+const CanvasContainer = document.getElementById("canvasContainer");
+const ApplicationOptions = {
+  canvasContainer: canvasContainer,
+  background: '#FF00FF',
+  resizeTo: window
+};
 
 // -----------------------------------------------------------------------------
-async function _InitPixi() {
-    PixiApp = new PIXI.Application();
-    await PixiApp.init({ background: '#FF00FF', resizeTo: window });
-
-    CanvasContainer = document.getElementById("canvasContainer");
-    CanvasContainer.appendChild(PixiApp.canvas);
-}
-
-
-function gameLoop()
+function GameLoop()
 {
-  Context.clearRect(0, 0, GameCanvas.width, GameCanvas.height);
-
-  Context.drawImage(CharacterSpritesNames[0], 0, 0);
-  document.requestAnimationFrame(gameLoop);
 }
 
 
 
 document.addEventListener("DOMContentLoaded", async () => {
-  await _InitPixi();
-  await RES_LoadResources(TEXTURES_TO_LOAD);
+  await Application.Create(ApplicationOptions);
+  await RES.LoadResources(TEXTURES_TO_LOAD);
+  RND.Seed();
 
-  let sprite = Sprite_Create(ASSETS_CHARACTERS_CHARACTERS_0001);
-  PixiApp.stage.addChild(sprite);
+  Application.SceneManager.PushScene(new GameScene());
+  Application.Start(GameLoop);
+
+  // PixiApp.stage.addChild(sprite);
 });
