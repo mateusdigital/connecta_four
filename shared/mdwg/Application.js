@@ -1,3 +1,25 @@
+//~---------------------------------------------------------------------------//
+//                               *       +                                    //
+//                         '                  |                               //
+//                     ()    .-.,="``"=.    - o -                             //
+//                           '=/_       \     |                               //
+//                        *   |  '=._    |                                    //
+//                             \     `=./`,        '                          //
+//                          .   '=.__.=' `='      *                           //
+//                 +                         +                                //
+//                      O      *        '       .                             //
+//                                                                            //
+//  File      : Application.js                                                //
+//  Project   : mdwg                                                          //
+//  Date      : 2024-03-29                                                    //
+//  License   : See project's COPYING.TXT for full info.                      //
+//  Author    : mateus.digital <hello@mateus.digital>                         //
+//  Copyright : mateus.digital - 2024                                         //
+//                                                                            //
+//  Description :                                                             //
+//                                                                            //
+//---------------------------------------------------------------------------~//
+
 //----------------------------------------------------------------------------//
 // Constants                                                                  //
 //----------------------------------------------------------------------------//
@@ -35,6 +57,9 @@ class Application
         container.appendChild(g_App.canvas);
 
         Application.SceneManager = new SceneManager();
+
+        g_App.stage.eventMode = "static";
+        g_App.stage.hitArea   = g_App.screen;
     }
 
     // -------------------------------------------------------------------------
