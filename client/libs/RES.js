@@ -48,6 +48,11 @@ class Sprite
         return new PIXI.Sprite(texture);
     }
 
+    static CreateWithTexture(texture)
+    {
+        return new PIXI.Sprite(texture);
+    }
+
     // -------------------------------------------------------------------------
     static White(width, height)
     {
