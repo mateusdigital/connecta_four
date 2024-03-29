@@ -4,13 +4,19 @@ const GAP_START_Y = 25;
 const GAP_BETWEEN_X = 5;
 const GAP_BETWEEN_Y = 5;
 
-
+// -----------------------------------------------------------------------------
 class GameBoard
   extends PIXI.NineSlicePlane
 {
 
   //--------------------------------------------------------------------------
-  constructor(tilesX, tilesY, currentPlayer, player1Texture, player2Texture)
+  constructor(
+    tilesX, tilesY,
+    currentPlayer,
+    playerIndex,
+    opponentIndex,
+    player1Texture,
+    player2Texture)
   {
     super(
       RES.GetTexture(ASSETS_UI_ASSETS_POPUP_BASE),
@@ -22,6 +28,8 @@ class GameBoard
     this._tilesY = tilesY;
 
     this._currentPlayer = currentPlayer;
+    this._playerIndex   = playerIndex;
+    this._opponentIndex = opponentIndex;
 
     this._placeholderTexture = null;
     this._player1Texture     = player1Texture;
@@ -50,7 +58,6 @@ class GameBoard
       }
     }
 
-
     //
     const sprite_width  = this._placeholderGrid[0][0].width;
     const sprite_height = this._placeholderGrid[0][0].height;
@@ -76,6 +83,10 @@ class GameBoard
   // ---------------------------------------------------------------------------
   _HandleMouseMove(mouseX, mouseY)
   {
+    if(!this._IsCurrentPlayer()) {
+      return;
+    }
+
     this._RestoreHoveredPlaceholder();
 
     const coord = this._GetMoveCoordsFromMousePosition(mouseX, mouseY);
@@ -90,6 +101,10 @@ class GameBoard
   // ---------------------------------------------------------------------------
   _HandleMouseClick(mouseX, mouseY)
   {
+    if(!this._IsCurrentPlayer()) {
+      return;
+    }
+
     const coord = this._GetMoveCoordsFromMousePosition(mouseX, mouseY);
 
     if(!coord) {
@@ -132,12 +147,13 @@ class GameBoard
   //
   // Game Logic
   //
+
   // ---------------------------------------------------------------------------
   _MakeMove(column, row)
   {
     this._indexGrid[row][column] = this._currentPlayer;
 
-    const sprite = this._placeholderGrid[row][column];
+    const sprite  = this._placeholderGrid[row][column];
     sprite.texure = this._GetTextureForCurrentPlayer();
 
     this._spritesGrid    [row][column]    = sprite;
@@ -151,7 +167,6 @@ class GameBoard
     }
   }
 
-
   // ---------------------------------------------------------------------------
   _GetFirstAvailableSpotForColumn(column)
   {
@@ -162,6 +177,12 @@ class GameBoard
     }
 
     return -1;
+  }
+
+  // ---------------------------------------------------------------------------
+  _IsCurrentPlayer()
+  {
+    return this._currentPlayer == this._playerIndex;
   }
 
 
@@ -178,7 +199,7 @@ class GameBoard
 
     this._currentHoveredPlaceholderSprite.texture = this._placeholderTexture;
     this._currentHoveredPlaceholderSprite = null;
-    console.log("reset");
+    // console.log("reset");
   }
 
   // ---------------------------------------------------------------------------
@@ -191,7 +212,7 @@ class GameBoard
     this._currentHoveredPlaceholderSprite = this._placeholderGrid[row][column];
     this._currentHoveredPlaceholderSprite.texture = this._GetTextureForCurrentPlayer();
 
-    console.log(row, column);
+    // console.log(row, column);
   }
 
   // ---------------------------------------------------------------------------

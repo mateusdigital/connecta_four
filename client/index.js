@@ -1,16 +1,15 @@
 
-const socket = io("ws://localhost:5000");
-socket.on("connect", ()=>{
-  console.log("connected");
-});
-
+let socket = null;
 
 // -----------------------------------------------------------------------------
 const CanvasContainer = document.getElementById("canvasContainer");
 const ApplicationOptions = {
   canvasContainer: canvasContainer,
-  background: '#FF00FF',
-  resizeTo: window
+  background: "#FFFFFF",
+  // backgroundAlpha: 0,
+  // resizeTo: window
+  width: DESIGN_WIDTH,
+  height: DESIGN_HEIGHT
 };
 
 // -----------------------------------------------------------------------------
@@ -25,8 +24,23 @@ document.addEventListener("DOMContentLoaded", async () => {
   await RES.LoadResources(TEXTURES_TO_LOAD);
   RND.Seed();
 
-  Application.SceneManager.PushScene(new GameScene());
+  const socket = io("ws://localhost:5000");
+  socket.on("connect", ()=>{
+    console.log("connected");
+  });
+
+  socket.on("match-start", (data)=>{
+    gMatch = new Match(data);
+
+    const game_scene = new GameScene(data, socket)
+    Application.SceneManager.PushScene(game_scene);
+  })
+
+
+
+  const menu_scene = new MenuScene();
+  Application.SceneManager.PushScene(menu_scene);
   Application.Start(GameLoop);
 
-  // PixiApp.stage.addChild(sprite);
+
 });

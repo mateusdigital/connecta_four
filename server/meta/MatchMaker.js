@@ -9,7 +9,7 @@
 //                 +                         +                                //
 //                      O      *        '       .                             //
 //                                                                            //
-//  File      : main.js                                                       //
+//  File      : MatchMaker.js                                                 //
 //  Project   : connecta-four - server                                        //
 //  Date      : 2024-03-29                                                    //
 //  License   : See project's COPYING.TXT for full info.                      //
@@ -20,56 +20,57 @@
 //                                                                            //
 //---------------------------------------------------------------------------~//
 
-//
-// Imports
-//
+const Arr = require("../../shared/mdwg/Array");
 
 // -----------------------------------------------------------------------------
-const path = require("path");
+class MatchMaker
+{
+  // -----------------------------------------------------------------------------
+  constructor()
+  {
+    this._clients     = new Map();
+    this._waitingList = [];
+    this._games       = [];
+  }
 
-const express          = require("express");
-const { createServer } = require("http");
-const { Server }       = require("socket.io");
 
-const MatchMaker = require("./meta/MatchMaker");
+  //
+  // Connection Handling
+  //
 
-//
-// Create Server
-//
+  // ---------------------------------------------------------------------------
+  OnClientConnect(socket)
+  {
+    console.log("Client Connected", socket.id);
+
+    this._clients.set(socket.id, socket);
+    this._waitingList.push(socket.id);
+
+    this._PrintStats();
+  }
+
+  // ---------------------------------------------------------------------------
+  OnClientDisconnect(socket)
+  {
+    console.log("Client Disconnect", socket.id);
+
+    this._clients.delete(socket.id);
+    Arr.Remove(this._waitingList, socket.id);
+
+    this._PrintStats();
+  }
+
+
+
+  // ---------------------------------------------------------------------------
+  _PrintStats()
+  {
+    console.log("Total Clients:", this._clients.size);
+    console.log("Waiting List :", this._waitingList.length);
+    console.log("Games:        ", this._games.length);
+  }
+
+}
 
 // -----------------------------------------------------------------------------
-const app        = express();
-const httpServer = createServer(app);
-
-const io = new Server(httpServer, {
-  cors: { origin: "*" }
-});
-
-//
-// Setup serving paths
-//
-
-// -----------------------------------------------------------------------------
-const clientPath = path.join(__dirname, "../client");
-const sharedPath = path.join(__dirname, "../shared");
-
-app.use(express.static(clientPath));
-app.use("/shared", express.static(sharedPath)); // Specify '/shared' as the base URL for shared files
-
-
-//
-// Entry Point
-//
-
-// -----------------------------------------------------------------------------
-const gMatchMaker = new MatchMaker();
-
-io.on("connect", (socket)=>{
-  gMatchMaker.OnClientConnect(socket);
-  socket.on("disconnect", ()=>{
-    gMatchMaker.OnClientDisconnect(socket);
-  });
-})
-
-// -----------------------------------------------------------------------------
-httpServer.listen(5000);
+module.exports = MatchMaker;

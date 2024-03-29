@@ -9,7 +9,7 @@
 //                 +                         +                                //
 //                      O      *        '       .                             //
 //                                                                            //
-//  File      : main.js                                                       //
+//  File      : Match.js                                                      //
 //  Project   : connecta-four - server                                        //
 //  Date      : 2024-03-29                                                    //
 //  License   : See project's COPYING.TXT for full info.                      //
@@ -20,56 +20,65 @@
 //                                                                            //
 //---------------------------------------------------------------------------~//
 
-//
-// Imports
-//
+// -----------------------------------------------------------------------------
+const GameBoard = require("./GameBoard");
+
 
 // -----------------------------------------------------------------------------
-const path = require("path");
+class Match
+{
+  constructor(player1, player2)
+  {
+    this._player1 = player1;
+    this._player2 = player2;
+    this._players = [ player1, player2 ];
 
-const express          = require("express");
-const { createServer } = require("http");
-const { Server }       = require("socket.io");
+    this._boardColumns  = 7;
+    this._boardRows     = 5;
+    this._currentPlayer = 0;
 
-const MatchMaker = require("./meta/MatchMaker");
+    this._gameBoard = new GameBoard(
+      this._boardColumns,
+      this._boardRows,
+      this._players
+    );
 
-//
-// Create Server
-//
+    this._Emit_MatchStart();
+    this._player1.socket.on("move-made", (data)=>{
+      console.log("Player 1 move: ", data)
+    });
+    this._player2.socket.on("move-made", (data)=>{
+      console.log("Player 2 move: ", data)
+    })
+  }
+
+  _Emit_MatchStart() {
+    const name = "match-start";
+
+    this._player1.socket.emit(
+      MatchStartData.EventName,
+      new MatchStartData(
+        this._boardColumns,
+        this._boardRows,
+        this._currentPlayer,
+        this._player1.playerData,
+        this._player2.playerData
+      )
+    );
+
+    this._player2.socket.emit(
+      MatchStartData.EventName,
+      new MatchStartData(
+        this._boardColumns,
+        this._boardRows,
+        this._currentPlayer,
+        this._player2.playerData,
+        this._player1.playerData
+      )
+    );
+
+  }
+}
 
 // -----------------------------------------------------------------------------
-const app        = express();
-const httpServer = createServer(app);
-
-const io = new Server(httpServer, {
-  cors: { origin: "*" }
-});
-
-//
-// Setup serving paths
-//
-
-// -----------------------------------------------------------------------------
-const clientPath = path.join(__dirname, "../client");
-const sharedPath = path.join(__dirname, "../shared");
-
-app.use(express.static(clientPath));
-app.use("/shared", express.static(sharedPath)); // Specify '/shared' as the base URL for shared files
-
-
-//
-// Entry Point
-//
-
-// -----------------------------------------------------------------------------
-const gMatchMaker = new MatchMaker();
-
-io.on("connect", (socket)=>{
-  gMatchMaker.OnClientConnect(socket);
-  socket.on("disconnect", ()=>{
-    gMatchMaker.OnClientDisconnect(socket);
-  });
-})
-
-// -----------------------------------------------------------------------------
-httpServer.listen(5000);
+module.exports = Match;

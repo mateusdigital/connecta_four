@@ -9,7 +9,7 @@
 //                 +                         +                                //
 //                      O      *        '       .                             //
 //                                                                            //
-//  File      : main.js                                                       //
+//  File      : GameBoard.js                                                  //
 //  Project   : connecta-four - server                                        //
 //  Date      : 2024-03-29                                                    //
 //  License   : See project's COPYING.TXT for full info.                      //
@@ -20,56 +20,19 @@
 //                                                                            //
 //---------------------------------------------------------------------------~//
 
-//
-// Imports
-//
+// -----------------------------------------------------------------------------
+class GameBoard
+{
+  constructor(columns, rows, players)
+  {
+    this.boardColumns = columns;
+    this.boardRows    = rows;
+
+    this.players = players;
+    this.players[0].SetIndex(0);
+    this.players[1].SetIndex(1);
+  }
+};
 
 // -----------------------------------------------------------------------------
-const path = require("path");
-
-const express          = require("express");
-const { createServer } = require("http");
-const { Server }       = require("socket.io");
-
-const MatchMaker = require("./meta/MatchMaker");
-
-//
-// Create Server
-//
-
-// -----------------------------------------------------------------------------
-const app        = express();
-const httpServer = createServer(app);
-
-const io = new Server(httpServer, {
-  cors: { origin: "*" }
-});
-
-//
-// Setup serving paths
-//
-
-// -----------------------------------------------------------------------------
-const clientPath = path.join(__dirname, "../client");
-const sharedPath = path.join(__dirname, "../shared");
-
-app.use(express.static(clientPath));
-app.use("/shared", express.static(sharedPath)); // Specify '/shared' as the base URL for shared files
-
-
-//
-// Entry Point
-//
-
-// -----------------------------------------------------------------------------
-const gMatchMaker = new MatchMaker();
-
-io.on("connect", (socket)=>{
-  gMatchMaker.OnClientConnect(socket);
-  socket.on("disconnect", ()=>{
-    gMatchMaker.OnClientDisconnect(socket);
-  });
-})
-
-// -----------------------------------------------------------------------------
-httpServer.listen(5000);
+module.exports = GameBoard;
