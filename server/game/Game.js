@@ -21,64 +21,55 @@
 //---------------------------------------------------------------------------~//
 
 // -----------------------------------------------------------------------------
-const GameBoard = require("./GameBoard");
+const RND = require("../../shared/mdwg/RND");
+const NET = require("../../shared/net/NET");
 
+const GameBoard = require("./GameBoard");
+const Player    = require("./Player");
 
 // -----------------------------------------------------------------------------
-class Match
+class Game
 {
-  constructor(player1, player2)
+  // ---------------------------------------------------------------------------
+  constructor(player1Socket, player2Socket)
   {
-    this._player1 = player1;
-    this._player2 = player2;
-    this._players = [ player1, player2 ];
+    this._player1 = new Player(player1Socket);
+    this._player2 = new Player(player2Socket);
+    this._players = [ this._player1, this._player2 ];
 
     this._boardColumns  = 7;
     this._boardRows     = 5;
-    this._currentPlayer = 0;
+    this._currentPlayer = RND.Int(0, 1);
 
     this._gameBoard = new GameBoard(
       this._boardColumns,
       this._boardRows,
       this._players
     );
-
-    this._Emit_MatchStart();
-    this._player1.socket.on("move-made", (data)=>{
-      console.log("Player 1 move: ", data)
-    });
-    this._player2.socket.on("move-made", (data)=>{
-      console.log("Player 2 move: ", data)
-    })
   }
 
-  _Emit_MatchStart() {
-    const name = "match-start";
-
-    this._player1.socket.emit(
-      MatchStartData.EventName,
-      new MatchStartData(
-        this._boardColumns,
-        this._boardRows,
-        this._currentPlayer,
-        this._player1.playerData,
-        this._player2.playerData
-      )
-    );
-
-    this._player2.socket.emit(
-      MatchStartData.EventName,
-      new MatchStartData(
-        this._boardColumns,
-        this._boardRows,
-        this._currentPlayer,
-        this._player2.playerData,
-        this._player1.playerData
-      )
-    );
-
+  // -----------------------------------------------------------------------------
+  DestroyAndGetRemainingPlayer(socketId)
+  {
+    if(this._player1.socket.id == socketId) {
+      NET.SendMessage(this._player2.socket, new NET.Messages.OtherPlayerDisconnected());
+      return this._player2.socket;
+    }
+    else if(this._player2.socket.id == socketId) {
+      NET.SendMessage(this._player1.socket, new NET.Messages.OtherPlayerDisconnected());
+      return this._player1.socket;
+    }
   }
+
+  // ---------------------------------------------------------------------------
+  IsPlayerSocketId(socketId)
+  {
+    return this._player1.socket.id == socketId
+        || this._player2.socket.id == socketId;
+  }
+
+
 }
 
 // -----------------------------------------------------------------------------
-module.exports = Match;
+module.exports = Game;

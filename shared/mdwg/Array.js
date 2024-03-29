@@ -105,7 +105,7 @@ class Arr
     {
         for(let i = 0; i < arr.length; ++i) {
             if(pred(arr[i])) {
-                Array_RemoveAt(arr, i);
+                Arr.RemoveAt(arr, i);
                 return;
             }
         }
@@ -127,7 +127,7 @@ class Arr
     //------------------------------------------------------------------------------
     static PopBack(arr)
     {
-        let e = Array_GetBack(arr);
+        let e = Arr.GetBack(arr);
         arr = arr.splice(arr.length -1, 1);
         return e;
     }
@@ -135,7 +135,7 @@ class Arr
     //------------------------------------------------------------------------------
     static PopFront(arr)
     {
-        let e = Array_GetFront(arr);
+        let e = Arr.GetFront(arr);
         arr = arr.splice(0, 1);
         return e;
     }
@@ -157,7 +157,7 @@ class Arr
     // -------------------------------------------------------------------------
     static GetBack(arr)
     {
-        if(Array_IsEmpty(arr)) {
+        if(Arr.IsEmpty(arr)) {
             return null;
         }
         return arr[arr.length-1];
@@ -166,7 +166,7 @@ class Arr
     //------------------------------------------------------------------------------
     static GetFront(arr)
     {
-        if(Array_IsEmpty(arr)) {
+        if(Arr.IsEmpty(arr)) {
             return null;
         }
         return arr[0];

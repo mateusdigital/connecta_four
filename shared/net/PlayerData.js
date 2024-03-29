@@ -33,5 +33,5 @@ class PlayerData
 
 // -----------------------------------------------------------------------------
 if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
-  module.exports = MatchStartMessage;
+  module.exports = PlayerData;
 }

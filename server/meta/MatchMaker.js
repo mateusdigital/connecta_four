@@ -20,7 +20,9 @@
 //                                                                            //
 //---------------------------------------------------------------------------~//
 
+// -----------------------------------------------------------------------------
 const Arr = require("../../shared/mdwg/Array");
+const Game = require("../game/Game");
 
 // -----------------------------------------------------------------------------
 class MatchMaker
@@ -44,23 +46,66 @@ class MatchMaker
     console.log("Client Connected", socket.id);
 
     this._clients.set(socket.id, socket);
-    this._waitingList.push(socket.id);
+    this._waitingList.push(socket);
+
+    this._PrintStats();
+    this._TryToCreateGame();
+  }
+
+  // ---------------------------------------------------------------------------
+  OnClientDisconnect(disconnectedSocket)
+  {
+    console.log("Client Disconnect", disconnectedSocket.id);
+
+    this._clients.delete(disconnectedSocket.id);
+
+    Arr.RemoveIf(this._waitingList, (otherSocket) => {
+      return otherSocket.id == disconnectedSocket.id
+    });
+
+    this._DestroyGame(disconnectedSocket.id);
+
+    this._PrintStats();
+  }
+
+  //
+  // Game Handling
+  //
+
+  // ---------------------------------------------------------------------------
+  _TryToCreateGame()
+  {
+    if(this._waitingList.length < 2) {
+      console.log("Not enough players...");
+      return;
+    }
+
+    console.log("Creating Game!");
+    const player1Socket = Arr.PopFront(this._waitingList);
+    const player2Socket = Arr.PopFront(this._waitingList);
+
+    const game = new Game(player1Socket, player2Socket);
+    this._games.push(game);
 
     this._PrintStats();
   }
 
   // ---------------------------------------------------------------------------
-  OnClientDisconnect(socket)
+  _DestroyGame(disconnectedSocket)
   {
-    console.log("Client Disconnect", socket.id);
+    const game = Arr.FindIf(this._games, (game)=>{
+      return game.IsPlayerSocketId(disconnectedSocket);
+    });
 
-    this._clients.delete(socket.id);
-    Arr.Remove(this._waitingList, socket.id);
+    if(!game) {
+      return;
+    }
 
-    this._PrintStats();
+    const otherPlayerSocket = game.DestroyAndGetRemainingPlayer(disconnectedSocket);
+    Arr.Remove(this._games, game);
+
+    this._waitingList.push(otherPlayerSocket);
   }
-
-
 
   // ---------------------------------------------------------------------------
   _PrintStats()
@@ -69,7 +114,6 @@ class MatchMaker
     console.log("Waiting List :", this._waitingList.length);
     console.log("Games:        ", this._games.length);
   }
-
 }
 
 // -----------------------------------------------------------------------------

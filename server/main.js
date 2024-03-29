@@ -31,6 +31,7 @@ const express          = require("express");
 const { createServer } = require("http");
 const { Server }       = require("socket.io");
 
+const RND = require("../shared/mdwg/RND");
 const MatchMaker = require("./meta/MatchMaker");
 
 //
@@ -44,6 +45,7 @@ const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: { origin: "*" }
 });
+
 
 //
 // Setup serving paths
@@ -63,6 +65,8 @@ app.use("/shared", express.static(sharedPath)); // Specify '/shared' as the base
 
 // -----------------------------------------------------------------------------
 const gMatchMaker = new MatchMaker();
+
+RND.Seed(1234);
 
 io.on("connect", (socket)=>{
   gMatchMaker.OnClientConnect(socket);

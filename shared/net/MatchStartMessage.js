@@ -24,7 +24,7 @@
 // -----------------------------------------------------------------------------
 class MatchStartMessage
 {
-  static EventName = "match-start";
+  static MSG_NAME = "MatchStartMessage";
 
   constructor(boardColumns, boardRows, startPlayer, playerData, opponentData)
   {
