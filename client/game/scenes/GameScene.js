@@ -16,8 +16,8 @@ class GameScene
       initData.startPlayer,
       initData.playerData.playerIndex,
       initData.opponentData.playerIndex,
-      this._GetTextureForPlayerAvatar(initData.playerData.playerAvatar),
-      this._GetTextureForPlayerAvatar(initData.opponentData.playerAvatar),
+      this._GetTextureForPlayerAvatar(initData.playerData.playerAvatarIndex),
+      this._GetTextureForPlayerAvatar(initData.opponentData.playerAvatarIndex),
     );
 
     this.addChild(this._gameBoard);

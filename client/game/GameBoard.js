@@ -35,9 +35,9 @@ class GameBoard
     this._player1Texture     = player1Texture;
     this._player2Texture     = player2Texture;
 
-    this._indexGrid       = Array_Create2D(tilesY, tilesX);
-    this._placeholderGrid = Array_Create2D(tilesY, tilesX);
-    this._spritesGrid     = Array_Create2D(tilesY, tilesX);
+    this._indexGrid       = Arr.Create2D(tilesY, tilesX);
+    this._placeholderGrid = Arr.Create2D(tilesY, tilesX);
+    this._spritesGrid     = Arr.Create2D(tilesY, tilesX);
 
     this._currentHoveredPlaceholderSprite = null;
 

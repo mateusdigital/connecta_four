@@ -23,9 +23,8 @@
 // -----------------------------------------------------------------------------
 class PlayerData
 {
-  constructor(index, name, avatar)
+  constructor(name, avatar)
   {
-    this.playerIndex       = index;
     this.playerName        = name;
     this.playerAvatarIndex = avatar;
   }

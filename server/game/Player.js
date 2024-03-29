@@ -21,6 +21,7 @@
 //---------------------------------------------------------------------------~//
 
 // -----------------------------------------------------------------------------
+const RND = require("../../shared/mdwg/RND");
 const PlayerData = require("../../shared/net/PlayerData");
 
 // -----------------------------------------------------------------------------
@@ -30,7 +31,10 @@ class Player
   constructor(socket)
   {
     this.socket     = socket;
-    this.playerData = new PlayerData();
+    this.playerData = new PlayerData(
+      "player" + RND.Int(),
+      RND.Int(0, 7)
+    );
   }
 
   // ---------------------------------------------------------------------------

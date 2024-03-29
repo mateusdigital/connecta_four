@@ -87,6 +87,8 @@ class MatchMaker
     const game = new Game(player1Socket, player2Socket);
     this._games.push(game);
 
+    game.StartGame();
+
     this._PrintStats();
   }
 

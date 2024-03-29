@@ -22,19 +22,6 @@
 
 
 // -----------------------------------------------------------------------------
-class MatchStartMessage
-{
-  static MSG_NAME = "MatchStartMessage";
-
-  constructor(boardColumns, boardRows, startPlayer, playerData, opponentData)
-  {
-    this.boardColumns = boardColumns;
-    this.boardRows    = boardRows;
-    this.startPlayer  = startPlayer;
-    this.playerData   = playerData;
-    this.opponentData = opponentData;
-  }
-}
 
 // -----------------------------------------------------------------------------
 if (typeof module !== "undefined" && typeof module.exports !== "undefined") {

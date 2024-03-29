@@ -15,21 +15,24 @@ const ApplicationOptions = {
 // -----------------------------------------------------------------------------
 function GameLoop()
 {
+  // Empty...
 }
 
+//
+// Entry Point
+//
 
-
+// -----------------------------------------------------------------------------
 document.addEventListener("DOMContentLoaded", async () => {
   await Application.Create(ApplicationOptions);
   await RES.LoadResources(TEXTURES_TO_LOAD);
-  RND.Seed();
 
   const socket = io("ws://localhost:5000");
-  socket.on("connect", ()=>{
+  socket.on("connect", ()=> {
     console.log("connected");
   });
 
-  socket.on("match-start", (data)=>{
+  socket.on(NET.Messages.MatchStarted.MSG_NAME, (data)=>{
     gMatch = new Match(data);
 
     const game_scene = new GameScene(data, socket)

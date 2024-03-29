@@ -49,6 +49,27 @@ class Game
   }
 
   // -----------------------------------------------------------------------------
+  StartGame()
+  {
+    //
+    NET.SendMessage(this._player1.socket, new NET.Messages.MatchStarted(
+      this._boardColumns,
+      this._boardRows,
+      this._currentPlayer,
+      this._player1.playerData,
+      this._player2.playerData,
+    ));
+
+    NET.SendMessage(this._player2.socket, new NET.Messages.MatchStarted(
+      this._boardColumns,
+      this._boardRows,
+      this._currentPlayer,
+      this._player2.playerData,
+      this._player1.playerData,
+    ));
+  }
+
+  // -----------------------------------------------------------------------------
   DestroyAndGetRemainingPlayer(socketId)
   {
     if(this._player1.socket.id == socketId) {
