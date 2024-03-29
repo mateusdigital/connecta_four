@@ -1,37 +1,33 @@
 
-const GAME_BOARD_HEIGHT = 7;
-const GAME_BOARD_WIDTH  = 6;
-
+// -----------------------------------------------------------------------------
 class GameScene
   extends BaseScene
 {
+  // ---------------------------------------------------------------------------
   constructor()
   {
     super();
 
-    this._gameBoard = Array_Create2D(GAME_BOARD_HEIGHT, GAME_BOARD_WIDTH);
+    this._gameBoard = new GameBoard(
+      GAME_BOARD_TILES_X, GAME_BOARD_TILES_Y,
+      0,
+      RES.GetTexture(ASSETS_CHARACTERS_CHARACTERS_0001),
+      RES.GetTexture(ASSETS_CHARACTERS_CHARACTERS_0002)
+    );
+    this.addChild(this._gameBoard);
 
-    for(let i = 0; i < GAME_BOARD_HEIGHT; ++i) {
-      for(let j = 0; j < GAME_BOARD_WIDTH; ++j) {
-        this._gameBoard[i][j] = RND.Int(1, 7);
-      }
+
+    this._gameBoard.OnMoveMade = (column, row) => {
+      console.log("move made", column, row);
     }
 
-    for(let i = 0; i < GAME_BOARD_HEIGHT; ++i) {
-      for(let j = 0; j < GAME_BOARD_WIDTH; ++j) {
-        const sprite_index = this._gameBoard[i][j];
-        const sprite_name  = `assets/characters/characters_000${sprite_index}.png`;
 
-        const sprite = Sprite.Create(sprite_name);
-        sprite.x = j * sprite.width;
-        sprite.y = i * sprite.height;
+    // this._portraitLeft = new HudPortrait();
+    // this.addChild(this._portraitLeft);
 
-        this.addChild(sprite);
-      }
-    }
-
+    // this._portraitRight = new HudPortrait();
+    // this.addChild(this._portraitRight);
+    // this._portraitRight.x = DESIGN_WIDTH - this._portraitRight.width;
 
   }
-
-
 }
