@@ -3,6 +3,7 @@ const GAP_START_X = 25;
 const GAP_START_Y = 25;
 const GAP_BETWEEN_X = 5;
 const GAP_BETWEEN_Y = 5;
+const INVALID_PLAYER_INDEX = -1;
 
 // -----------------------------------------------------------------------------
 class GameBoard
@@ -11,12 +12,13 @@ class GameBoard
 
   //--------------------------------------------------------------------------
   constructor(
-    tilesX, tilesY,
+    tilesX,
+    tilesY,
     currentPlayer,
     playerIndex,
     opponentIndex,
-    player1Texture,
-    player2Texture)
+    playerTexture,
+    opponentTexture)
   {
     super(
       RES.GetTexture(ASSETS_UI_ASSETS_POPUP_BASE),
@@ -32,40 +34,46 @@ class GameBoard
     this._opponentIndex = opponentIndex;
 
     this._placeholderTexture = null;
-    this._player1Texture     = player1Texture;
-    this._player2Texture     = player2Texture;
+    this._playerTexture     = playerTexture;
+    this._opponentTexture   = opponentTexture;
 
-    this._indexGrid       = Arr.Create2D(tilesY, tilesX);
-    this._placeholderGrid = Arr.Create2D(tilesY, tilesX);
-    this._spritesGrid     = Arr.Create2D(tilesY, tilesX);
+    this._indexGrid   = Arr.Create2D(tilesY, tilesX, INVALID_PLAYER_INDEX);
+    this._spritesGrid = Arr.Create2D(tilesY, tilesX);
 
-    this._currentHoveredPlaceholderSprite = null;
+    this._currentHoveredSprite = null;
 
-    // Create the placeholders...
-    const texture_name = `assets/characters/characters_0000.png`;
-    this._placeholderTexture = RES.GetTexture(texture_name);
+    this._SetInputCallbacks();
+    this._CreatePlaceholderSprites();
+    this._AdjustContainerSize();
+  }
 
-    for (let i = 0; i < tilesY; ++i) {
-      for (let j = 0; j < tilesX; ++j) {
-        const sprite = Sprite.CreateWithTexture(this._placeholderTexture);
-        sprite.scale.set(0.3);
+  // ----------------------------------------------------------------------------
+  GetPlayerIndex()
+  {
+    return this._playerIndex;
+  }
 
-        sprite.x = GAP_START_X + (j * sprite.width)  + (GAP_BETWEEN_X * j);
-        sprite.y = GAP_START_Y + (i * sprite.height) + (GAP_BETWEEN_Y * i);
+  SetCurrentPlayer(playerIndex)
+  {
+    this._currentPlayer = playerIndex;
+  }
 
-        this._placeholderGrid[i][j] = sprite;
-        this.addChild(sprite);
-      }
-    }
+  SetBoard(grid)
+  {
+    this._indexGrid = grid;
+    this._UpdateGridSprites();
+  }
 
-    //
-    const sprite_width  = this._placeholderGrid[0][0].width;
-    const sprite_height = this._placeholderGrid[0][0].height;
-    this.width  = (GAP_START_X * 2) + (sprite_width  * tilesX) + (GAP_BETWEEN_X * tilesX);
-    this.height = (GAP_START_Y * 2) + (sprite_height * tilesY) + (GAP_BETWEEN_Y * tilesY);
 
+  //
+  // Input Handling
+  //
+
+  // ---------------------------------------------------------------------------
+  _SetInputCallbacks()
+  {
     this.interactive = true;
-    this.buttonMode = false;
+    this.buttonMode  = true;
 
     this.on("pointermove", (evt) => {
         this._HandleMouseMove(evt.data.global.x, evt.data.global.y);
@@ -76,9 +84,6 @@ class GameBoard
     });
   }
 
-  //
-  // Input Handling
-  //
 
   // ---------------------------------------------------------------------------
   _HandleMouseMove(mouseX, mouseY)
@@ -119,7 +124,7 @@ class GameBoard
   {
     let column = -1;
     for(let i = 0; i < this._tilesX; ++i) {
-      const sprite = this._placeholderGrid[0][i];
+      const sprite = this._spritesGrid[0][i];
       if(!sprite) {
         continue;
       }
@@ -132,12 +137,12 @@ class GameBoard
     }
 
     if(column == -1) {
-      return;
+      return null;
     }
 
-    let row = this._GetFirstAvailableSpotForColumn(column);
+    const row = this._GetFirstAvailableSpotForColumn(column);
     if(row == -1) {
-      return;
+      return null;
     }
 
     return {x: column, y: row};
@@ -153,13 +158,10 @@ class GameBoard
   {
     this._indexGrid[row][column] = this._currentPlayer;
 
-    const sprite  = this._placeholderGrid[row][column];
-    sprite.texure = this._GetTextureForCurrentPlayer();
+    const sprite  = this._spritesGrid[row][column];
+    sprite.texure = this._playerTexture;
 
-    this._spritesGrid    [row][column]    = sprite;
-    this._placeholderGrid[row][column]    = null;
-    this._currentHoveredPlaceholderSprite = null;
-
+    this._currentHoveredSprite = null;
     this._currentPlayer = (this._currentPlayer + 1) % 2;
 
     if(this.OnMoveMade) {
@@ -171,7 +173,7 @@ class GameBoard
   _GetFirstAvailableSpotForColumn(column)
   {
     for(let i = this._tilesY -1; i >= 0 ; --i) {
-      if(this._indexGrid[i][column] === null) {
+      if(this._indexGrid[i][column] === INVALID_PLAYER_INDEX) {
         return i;
       }
     }
@@ -187,40 +189,81 @@ class GameBoard
 
 
   //
-  // Plaholder Texture Changing
+  // Sprites
+  //
+
+  // ---------------------------------------------------------------------------
+  _CreatePlaceholderSprites()
+  {
+    const texture_name = `assets/characters/characters_0000.png`;
+    this._placeholderTexture = RES.GetTexture(texture_name);
+
+    for (let i = 0; i < this._tilesY; ++i) {
+      for (let j = 0; j < this._tilesX; ++j) {
+        const sprite = Sprite.CreateWithTexture(this._placeholderTexture);
+        sprite.scale.set(0.3);
+
+        sprite.x = GAP_START_X + (j * sprite.width)  + (GAP_BETWEEN_X * j);
+        sprite.y = GAP_START_Y + (i * sprite.height) + (GAP_BETWEEN_Y * i);
+
+        this._spritesGrid[i][j] = sprite;
+        this.addChild(sprite);
+      }
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  _AdjustContainerSize()
+  {
+    const sprite_width  = this._spritesGrid[0][0].width;
+    const sprite_height = this._spritesGrid[0][0].height;
+    this.width  = (GAP_START_X * 2) + (sprite_width  * this._tilesX) + (GAP_BETWEEN_X * this._tilesX);
+    this.height = (GAP_START_Y * 2) + (sprite_height * this._tilesY) + (GAP_BETWEEN_Y * this._tilesY);
+  }
+
+  // ---------------------------------------------------------------------------
+  _UpdateGridSprites()
+  {
+    for (let i = 0; i < this._tilesY; ++i) {
+      for (let j = 0; j < this._tilesX; ++j) {
+        const value = this._indexGrid[i][j];
+        let texture = this._placeholderTexture;
+        if(value === this._playerIndex) {
+          texture = this._playerTexture;
+        }
+        else if(value === this._opponentIndex) {
+          texture = this._opponentTexture;
+        }
+
+        this._spritesGrid[i][j].texture = texture;
+      }
+    }
+  }
+
+
+  //
+  // Placeholder Texture Changing
   //
 
   // ---------------------------------------------------------------------------
   _RestoreHoveredPlaceholder()
   {
-    if(!this._currentHoveredPlaceholderSprite) {
+    if(!this._currentHoveredSprite) {
       return;
     }
 
-    this._currentHoveredPlaceholderSprite.texture = this._placeholderTexture;
-    this._currentHoveredPlaceholderSprite = null;
-    // console.log("reset");
+    this._currentHoveredSprite.texture = this._placeholderTexture;
+    this._currentHoveredSprite = null;
   }
 
   // ---------------------------------------------------------------------------
   _UpdateHoveredPlaceholder(column, row)
   {
-    if(!this._placeholderGrid[row][column]) {
+    if(this._indexGrid[row][column] != INVALID_PLAYER_INDEX) {
       return;
     }
 
-    this._currentHoveredPlaceholderSprite = this._placeholderGrid[row][column];
-    this._currentHoveredPlaceholderSprite.texture = this._GetTextureForCurrentPlayer();
-
-    // console.log(row, column);
+    this._currentHoveredSprite = this._spritesGrid[row][column];
+    this._currentHoveredSprite.texture = this._playerTexture;
   }
-
-  // ---------------------------------------------------------------------------
-  _GetTextureForCurrentPlayer()
-  {
-    return (this._currentPlayer == 0)
-      ? this._player1Texture
-      : this._player2Texture;
-  }
-
 }

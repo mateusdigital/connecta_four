@@ -21,16 +21,39 @@
 //---------------------------------------------------------------------------~//
 
 // -----------------------------------------------------------------------------
+const Arr = require("../../shared/mdwg/Array");
+
+// -----------------------------------------------------------------------------
 class GameBoard
 {
   constructor(columns, rows, players)
   {
     this.boardColumns = columns;
     this.boardRows    = rows;
+    this.grid         = Arr.Create2D(this.boardRows, this.boardColumns, -1);
 
     this.players = players;
+
     this.players[0].SetIndex(0);
     this.players[1].SetIndex(1);
+
+    this.players[0].playerData.playerAvatarIndex = 1;
+    this.players[1].playerData.playerAvatarIndex = 2;
+  }
+
+  MakeMove(column, row, playerIndex)
+  {
+    this.grid[row][column] = playerIndex
+  }
+
+  CheckGameOver()
+  {
+    return false;
+  }
+
+  GetWinner()
+  {
+    return -1;
   }
 };
 

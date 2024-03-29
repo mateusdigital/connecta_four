@@ -39,14 +39,57 @@ class Game
 
     this._boardColumns  = 7;
     this._boardRows     = 5;
-    this._currentPlayer = RND.Int(0, 1);
+    this._currentPlayer = 0; // RND.Int(0, 1);
 
     this._gameBoard = new GameBoard(
       this._boardColumns,
       this._boardRows,
       this._players
     );
+
+    this._AddListenCallbacks();
   }
+
+  //
+  // Player Connection Methods
+  //
+
+  // ---------------------------------------------------------------------------
+  DestroyAndGetRemainingPlayer(socketId)
+  {
+    if(this._player1.socket.id == socketId) {
+      NET.SendMessage(this._player2.socket, new NET.Messages.OtherPlayerDisconnected());
+      return this._player2.socket;
+    }
+    else if(this._player2.socket.id == socketId) {
+      NET.SendMessage(this._player1.socket, new NET.Messages.OtherPlayerDisconnected());
+      return this._player1.socket;
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  IsPlayerSocketId(socketId)
+  {
+    return this._player1.socket.id == socketId
+        || this._player2.socket.id == socketId;
+  }
+
+  // ---------------------------------------------------------------------------
+  _AddListenCallbacks()
+  {
+    this._player1.socket.on(NET.Messages.MoveMade.MSG_NAME, (data)=>{
+        this._MakeMove(data);
+    });
+
+    this._player2.socket.on(NET.Messages.MoveMade.MSG_NAME, (data)=>{
+      this._MakeMove(data);
+    });
+  }
+
+
+  //
+  // Game Logic Methods
+  //
 
   // -----------------------------------------------------------------------------
   StartGame()
@@ -69,26 +112,27 @@ class Game
     ));
   }
 
-  // -----------------------------------------------------------------------------
-  DestroyAndGetRemainingPlayer(socketId)
+  _MakeMove(msgData)
   {
-    if(this._player1.socket.id == socketId) {
-      NET.SendMessage(this._player2.socket, new NET.Messages.OtherPlayerDisconnected());
-      return this._player2.socket;
-    }
-    else if(this._player2.socket.id == socketId) {
-      NET.SendMessage(this._player1.socket, new NET.Messages.OtherPlayerDisconnected());
-      return this._player1.socket;
-    }
-  }
+    console.log(msgData);
+    this._gameBoard.MakeMove(msgData.column, msgData.row, this._currentPlayer);
 
-  // ---------------------------------------------------------------------------
-  IsPlayerSocketId(socketId)
-  {
-    return this._player1.socket.id == socketId
-        || this._player2.socket.id == socketId;
-  }
+    const isGameOver = this._gameBoard.CheckGameOver();
+    if(isGameOver) {
 
+      return;
+    }
+
+    this._currentPlayer = (this._currentPlayer + 1) % 2;
+
+    const new_turn_msg = new NET.Messages.NewTurn(
+      this._currentPlayer,
+      this._gameBoard.grid
+    )
+
+    NET.SendMessage(this._player1.socket, new_turn_msg);
+    NET.SendMessage(this._player2.socket, new_turn_msg);
+  }
 
 }
 
