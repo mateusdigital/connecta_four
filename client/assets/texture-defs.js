@@ -1,3 +1,4 @@
+const ASSETS_CHARACTERS_CHARACTERS_0000 = "assets/characters/characters_0000.png"
 const ASSETS_CHARACTERS_CHARACTERS_0001 = "assets/characters/characters_0001.png"
 const ASSETS_CHARACTERS_CHARACTERS_0002 = "assets/characters/characters_0002.png"
 const ASSETS_CHARACTERS_CHARACTERS_0003 = "assets/characters/characters_0003.png"
@@ -30,7 +31,8 @@ const ASSETS_UI_ASSETS_POPUP_HEADER = "assets/ui_assets/popup_header.png"
 const ASSETS_UI_ASSETS_SHOP_TITLE = "assets/ui_assets/shop_title.png"
 const ASSETS_UI_ASSETS_STORECOUNTER_BAR = "assets/ui_assets/storeCounter_bar.png"
 
-const TEXTURES_TO_LOAD = [ "assets/characters/characters_0001.png",
+const TEXTURES_TO_LOAD = [ "assets/characters/characters_0000.png",
+"assets/characters/characters_0001.png",
 "assets/characters/characters_0002.png",
 "assets/characters/characters_0003.png",
 "assets/characters/characters_0004.png",
