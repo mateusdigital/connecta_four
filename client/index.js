@@ -1,10 +1,12 @@
 
-// const root = document.getElementById("content");
-// m.mount(root, {
-//   view: function() {
-//     return m(MenuView);
-//   }
-// });
+RND.Seed();
+
+const root = document.getElementById("content");
+m.mount(root, {
+  view: function() {
+    return m(MenuView);
+  }
+});
 
 
 // // -----------------------------------------------------------------------------
