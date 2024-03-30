@@ -30,6 +30,7 @@ const ASSETS_UI_ASSETS_POPUP_BASE = "assets/ui_assets/popup_base.png"
 const ASSETS_UI_ASSETS_POPUP_HEADER = "assets/ui_assets/popup_header.png"
 const ASSETS_UI_ASSETS_SHOP_TITLE = "assets/ui_assets/shop_title.png"
 const ASSETS_UI_ASSETS_STORECOUNTER_BAR = "assets/ui_assets/storeCounter_bar.png"
+const ASSETS_UI_ASSETS__DUMMY = "assets/ui_assets/_dummy.png"
 
 const TEXTURES_TO_LOAD = [ "assets/characters/characters_0000.png",
 "assets/characters/characters_0001.png",
@@ -62,4 +63,5 @@ const TEXTURES_TO_LOAD = [ "assets/characters/characters_0000.png",
 "assets/ui_assets/popup_base.png",
 "assets/ui_assets/popup_header.png",
 "assets/ui_assets/shop_title.png",
-"assets/ui_assets/storeCounter_bar.png" ]
+"assets/ui_assets/storeCounter_bar.png",
+"assets/ui_assets/_dummy.png" ]

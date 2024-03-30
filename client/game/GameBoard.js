@@ -1,8 +1,4 @@
 
-const GAP_START_X = 25;
-const GAP_START_Y = 25;
-const GAP_BETWEEN_X = 5;
-const GAP_BETWEEN_Y = 5;
 const INVALID_PLAYER_INDEX = -1;
 
 // -----------------------------------------------------------------------------
@@ -20,10 +16,8 @@ class GameBoard
     playerTexture,
     opponentTexture)
   {
-    super(
-      RES.GetTexture(ASSETS_UI_ASSETS_POPUP_BASE),
-      46, 46, 46, 46
-    );
+    //
+    super(RES.GetTexture(ASSETS_UI_ASSETS__DUMMY), 0,0,0,0);
 
     //
     this._tilesX = tilesX;
@@ -41,6 +35,11 @@ class GameBoard
     this._spritesGrid = Arr.Create2D(tilesY, tilesX);
 
     this._currentHoveredSprite = null;
+
+    this._gap_start_x   = 0;
+    this._gap_start_y   = 0;
+    this._gap_between_x = 0;
+    this._gap_between_y = 0;
 
     this._SetInputCallbacks();
     this._CreatePlaceholderSprites();
@@ -198,13 +197,24 @@ class GameBoard
     const texture_name = `assets/characters/characters_0000.png`;
     this._placeholderTexture = RES.GetTexture(texture_name);
 
+    const app_size = Application.GetSize();
+    const texture_side = this._placeholderTexture.width; // It's squared
+
+    const height = (app_size.height / this._tilesY);
+    const width  = (app_size.width  / this._tilesX);
+
+    const min_side = Math.min(height, width);
+    const scale    = (min_side / texture_side);
+
+    const texture_side_scaled = (texture_side * scale);
+    this._gap_start_x = (app_size.width - (texture_side_scaled * this._tilesX)) * 0.5;
+
     for (let i = 0; i < this._tilesY; ++i) {
       for (let j = 0; j < this._tilesX; ++j) {
         const sprite = Sprite.CreateWithTexture(this._placeholderTexture);
-        sprite.scale.set(0.3);
-
-        sprite.x = GAP_START_X + (j * sprite.width)  + (GAP_BETWEEN_X * j);
-        sprite.y = GAP_START_Y + (i * sprite.height) + (GAP_BETWEEN_Y * i);
+        sprite.scale.set(scale);
+        sprite.x = this._gap_start_x + (j * sprite.width)  + (this._gap_between_x * j);
+        sprite.y = this._gap_start_y + (i * sprite.height) + (this._gap_between_y * i);
 
         this._spritesGrid[i][j] = sprite;
         this.addChild(sprite);
@@ -217,8 +227,8 @@ class GameBoard
   {
     const sprite_width  = this._spritesGrid[0][0].width;
     const sprite_height = this._spritesGrid[0][0].height;
-    this.width  = (GAP_START_X * 2) + (sprite_width  * this._tilesX) + (GAP_BETWEEN_X * this._tilesX);
-    this.height = (GAP_START_Y * 2) + (sprite_height * this._tilesY) + (GAP_BETWEEN_Y * this._tilesY);
+    this.width  = (this._gap_start_x * 2) + (sprite_width  * this._tilesX) + (this._gap_between_x * this._tilesX);
+    this.height = (this._gap_start_y * 2) + (sprite_height * this._tilesY) + (this._gap_between_y * this._tilesY);
   }
 
   // ---------------------------------------------------------------------------

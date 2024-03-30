@@ -49,17 +49,24 @@ class Application
     // -------------------------------------------------------------------------
     static async Create(options)
     {
+
         const container = options.canvasContainer || document.body;
 
         g_App = new PIXI.Application();
         await g_App.init(options);
 
+        g_App._options = options;
         container.appendChild(g_App.canvas);
 
         Application.SceneManager = new SceneManager();
 
         g_App.stage.eventMode = "static";
         g_App.stage.hitArea   = g_App.screen;
+    }
+
+    static GetSize()
+    {
+        return { width: g_App._options.width, height: g_App._options.height };
     }
 
     // -------------------------------------------------------------------------
