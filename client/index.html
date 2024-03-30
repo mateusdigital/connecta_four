@@ -18,7 +18,74 @@
 </head>
 
 <body>
+  <div class="background"></div>
   <div id="content">
+  </div>
+
+  <div class="menuGridContainer">
+    <div class="menuGrid">
+      <div class="logoContainer">
+        <img src="assets/ui_assets/logo.png">
+      </div>
+
+      <div class="moreContentContainer">
+        <div class="menuPanel">
+          <div class="menuPanelIconContainer">
+            <img src="assets/characters/characters_0001.png">
+          </div>
+
+          <div class="menuPanelCharmContainer">
+            <img src="assets/ui_assets/popup_header.png">
+          </div>
+        </div>
+      </div>
+
+      <div class="gameOptionsContainer">
+        <div class="menuPanel">
+
+          <div class="menuPanelIconContainer">
+            <img src="assets/characters/characters_0001.png">
+          </div>
+
+          <div class="menuPanelCharmContainer">
+            <img src="assets/ui_assets/popup_header.png">
+          </div>
+
+          <div class="menuPanelContents">
+            <div class="menuPanelSectionContainer">
+              <span class="menuPanelSubtitle">your name</span>
+              <input></input>
+            </div>
+
+            <div class="menuPanelSectionContainer">
+              <span class="menuPanelSubtitle">your avatar</span>
+              <div class="avatarSelectionContainer">
+                <img src="assets/characters/characters_0001.png">
+                <img src="assets/characters/characters_0002.png">
+                <img src="assets/characters/characters_0003.png">
+                <img src="assets/characters/characters_0004.png">
+                <img src="assets/characters/characters_0005.png">
+                <img src="assets/characters/characters_0006.png">
+                <img src="assets/characters/characters_0007.png">
+              </div>
+            </div>
+
+            <div class="menuPanelSectionContainer">
+              <span class="menuPanelSubtitle">game mode</span>
+              <div class="modeSelectionContainer">
+                <span>multiplayer online</span>
+                <span>against computer</span>
+                <span>invite a friend</span>
+              </div>
+            </div>
+
+            <div class="menuPanelSectionContainer">
+              <button class="playButton">Play</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- base libs -->
@@ -56,6 +123,9 @@
   <script src="/game/scenes/MenuScene.js"></script>
   <script src="/game/GameBoard.js"></script>
   <script src="/game/HudPortrait.js"></script>
+
+  <!-- --------------------------------------------------------------------- -->
+  <script src="/views/MenuView.js"></script>
 
   <!-- --------------------------------------------------------------------- -->
   <script src="/index.js"></script>

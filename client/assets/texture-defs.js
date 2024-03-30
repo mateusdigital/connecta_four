@@ -26,6 +26,7 @@ const ASSETS_UI_ASSETS_ICON_INFO = "assets/ui_assets/icon_info.png"
 const ASSETS_UI_ASSETS_INGAMEBANKBALANCE_BAR = "assets/ui_assets/inGameBankBalance_bar.png"
 const ASSETS_UI_ASSETS_INGAMECOUNTER_BAR = "assets/ui_assets/inGameCounter_bar.png"
 const ASSETS_UI_ASSETS_INGAME_COUNTER = "assets/ui_assets/inGame_counter.png"
+const ASSETS_UI_ASSETS_LOGO = "assets/ui_assets/logo.png"
 const ASSETS_UI_ASSETS_POPUP_BASE = "assets/ui_assets/popup_base.png"
 const ASSETS_UI_ASSETS_POPUP_HEADER = "assets/ui_assets/popup_header.png"
 const ASSETS_UI_ASSETS_SHOP_TITLE = "assets/ui_assets/shop_title.png"
@@ -60,6 +61,7 @@ const TEXTURES_TO_LOAD = [ "assets/characters/characters_0000.png",
 "assets/ui_assets/inGameBankBalance_bar.png",
 "assets/ui_assets/inGameCounter_bar.png",
 "assets/ui_assets/inGame_counter.png",
+"assets/ui_assets/logo.png",
 "assets/ui_assets/popup_base.png",
 "assets/ui_assets/popup_header.png",
 "assets/ui_assets/shop_title.png",

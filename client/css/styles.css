@@ -20,8 +20,6 @@
 /*                                                                            */
 /*---------------------------------------------------------------------------~*/
 
-
-
 /*
  *
  *  Fonts
@@ -40,26 +38,13 @@
 }
 
 
-/* -------------------------------------------------------------------------- */
-html, body, #root {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-
-/* -------------------------------------------------------------------------- */
-.mainContainer {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
 /*
  *
- *  Animated Background
+ *  Vars
  *
 */
+
+/* -------------------------------------------------------------------------- */
 :root {
   --background-color2: #4e54c8;
   --background-color1: #6267ce;
@@ -67,15 +52,33 @@ html, body, #root {
   /* --background-color1: #bde03c;
   --background-color2: #92b221; */
 }
+
+
+
+/* -------------------------------------------------------------------------- */
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  width: 100%;
+}
+
+
+/*
+ *
+ *  Animated Background
+ *
+*/
+
 /* -------------------------------------------------------------------------- */
 .background {
   /* background-image: url("data:image/svg+xml,<svg id='patternId' width='200%' height='200%' xmlns='http://www.w3.org/2000/svg'><defs><pattern id='a' patternUnits='userSpaceOnUse' width='20' height='20' patternTransform='scale(8) rotate(45)'><rect x='0' y='0' width='200%' height='200%' fill='hsla(197, 88%, 90%, 1)'/><path d='M0 0h10v10H0z'  stroke-width='1' stroke='none' fill='hsla(197, 87%, 85%, 1)'/><path d='M10 10h10v10H10z'  stroke-width='1' stroke='none' fill='hsla(349, 64%, 90%, 1)'/></pattern></defs><rect width='800%' height='800%' transform='translate(-168,-240)' fill='url(%23a)'/></svg>"); */
   position: absolute;
-  top: 0;
+  top:  0;
   left: 0;
 
-  width:  1000%;
-  height: 1000%;
+  width:  100%;
+  height: 100%;
 
   background:
       radial-gradient(circle farthest-side at 0% 50%,var(--background-color1) 23.5%,#0000 0)16.8px 24px,
@@ -105,6 +108,215 @@ html, body, #root {
 }
 
 
+
+/* -------------------------------------------------------------------------- */
+.mainContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+
+/* -------------------------------------------------------------------------- */
+/* MENU                                                                       */
+/* -------------------------------------------------------------------------- */
+
+/* -------------------------------------------------------------------------- */
+.menuGridContainer {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  height: 100%;
+}
+
+/* -------------------------------------------------------------------------- */
+.menuGrid {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows:    1fr 1fr;
+  grid-template-areas:
+    "logoContainer        gameOptionsContainer"
+    "moreContentContainer gameOptionsContainer";
+
+  gap: 2rem 2rem;
+
+  justify-items: stretch;
+
+  width:  60%;
+  height: fit-content;
+}
+
+/* Menu Panel */
+/* -------------------------------------------------------------------------- */
+.menuPanel {
+  position: relative;
+  --margin-size: 0rem;
+
+  display: flex;
+  flex-direction: column;
+
+  margin: var(--margin-size);
+
+  height: calc(100% - (var(--margin-size) * 2));
+
+  min-width: 25rem;
+  max-width: 25rem;
+
+  border-radius: 2rem;
+
+  background-color: #e4f2f8;
+  box-shadow: rgba(0, 0, 0, 0.55) 0px 10px 15px;
+}
+
+.menuPanelContents {
+  display: flex;
+  flex-direction: column;
+
+  margin: 2rem;
+  gap: 2rem;
+
+  /* background-color: #4e54c8; */
+}
+
+/* Icon And Charm  */
+/* -------------------------------------------------------------------------- */
+.menuPanelIconContainer {
+  position: absolute;
+  top:  -60px;
+  left: -30px;
+}
+
+.menuPanelIconContainer img {
+  width: 130px;
+}
+
+/* -------------------------------------------------------------------------- */
+.menuPanelCharmContainer {
+  position: absolute;
+  top:  -22px;
+  left: 110px;
+}
+
+.menuPanelCharmContainer img {
+  width: 220px;
+}
+
+/* Section  */
+/* -------------------------------------------------------------------------- */
+.menuPanelSectionContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.menuPanelSubtitle {
+  margin-bottom: 0.5rem;
+
+  font-family: 'Snow Dream';
+  font-family: 'HVD Comic Serif Pro';
+  font-size: 1.5rem;
+
+  text-align: right;
+
+  color: black;
+  /* -webkit-text-stroke-width: 2px; */
+  /* -webkit-text-stroke-color: black; */
+}
+
+
+/* LOGO */
+/* -------------------------------------------------------------------------- */
+.logoContainer {
+  grid-area: logoContainer;
+
+  display: flex;
+  justify-content: flex-end;
+
+  /* background-color: green; */
+}
+
+.logoContainer img {
+  width:  100%;
+  height: 100%;
+  object-fit: contain;
+
+  max-width: 25rem;
+}
+
+
+/* More Content */
+/* -------------------------------------------------------------------------- */
+.moreContentContainer {
+  grid-area: moreContentContainer;
+
+  display: flex;
+  justify-content: flex-end;
+
+  /* background-color: blue; */
+}
+
+
+/* Game Options */
+/* -------------------------------------------------------------------------- */
+.gameOptionsContainer {
+  grid-area: gameOptionsContainer;
+  /* background-color: red; */
+}
+
+.gameOptionsContainer input {
+  border: 2px solid gray;
+  border-radius: 1rem;
+
+  font-family: 'Snow Dream';
+  /* font-family: 'HVD Comic Serif Pro'; */
+  font-size: 1.2rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+}
+
+/* -------------------------------------------------------------------------- */
+.avatarSelectionContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.avatarSelectionContainer img {
+  width: 70px;
+  aspect-ratio: 1/1;
+}
+
+/* -------------------------------------------------------------------------- */
+.modeSelectionContainer {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+}
+
+.modeSelectionContainer span {
+  font-family: 'HVD Comic Serif Pro';
+  font-family: 'Snow Dream';
+  font-size: 1.2rem;
+  padding: 0.5rem;
+}
+
+/* -------------------------------------------------------------------------- */
+.playButton {
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1.5rem;
+
+  font-family: 'Snow Dream';
+  font-size: 2rem;
+
+  /* background-color: green; */
+}
+
+
+
 /*
  *
  *  Canvas
@@ -122,7 +334,7 @@ html, body, #root {
 }
 
 /* -------------------------------------------------------------------------- */
-canvas {
+.canvasContainer canvas {
   display: block;
   margin-left: auto;
   margin-right: auto;
@@ -131,9 +343,16 @@ canvas {
   box-shadow: rgba(0, 0, 0, 0.55) 0px 10px 15px;
   border:  3px solid black;
   outline: 6px solid white;
-
 }
 
+
+/*
+ *
+ *  Portraits
+ *
+*/
+
+/* -------------------------------------------------------------------------- */
 .portraitsContainer {
   display: flex;
   justify-content: center;
@@ -146,6 +365,7 @@ canvas {
   padding: 1rem;
 }
 
+/* -------------------------------------------------------------------------- */
 .vs {
   font-family: 'Snow Dream';
   font-size: 5rem;
@@ -156,6 +376,7 @@ canvas {
 }
 
 
+/* -------------------------------------------------------------------------- */
 .portraitContainer {
   display: flex;
   flex-direction: row;
@@ -168,11 +389,10 @@ canvas {
   width: auto;
   height: 100%;
 
-
-
   /* background-color: red; */
 }
 
+/* -------------------------------------------------------------------------- */
 .portraitImageContainer {
   display: flex;
   justify-content: center;
@@ -186,12 +406,12 @@ canvas {
   /* background-color: blue; */
 }
 
+/* -------------------------------------------------------------------------- */
 .portraitImageContainer img {
   height: 100%;
 }
 
-
-
+/* -------------------------------------------------------------------------- */
 .portraitStatsContainer {
   display: flex;
   flex-direction: column;
@@ -201,11 +421,13 @@ canvas {
   /* background-color: #ff02ee; */
 }
 
+/* -------------------------------------------------------------------------- */
 .portraitStatsContainerRight {
   align-items: flex-start;
   text-align: left;
 }
 
+/* -------------------------------------------------------------------------- */
 .portraitNameKey {
   display: block;
 
@@ -215,9 +437,9 @@ canvas {
   color: #FFFFFF;
   -webkit-text-stroke-width: 2px;
   -webkit-text-stroke-color: black;
-
 }
 
+/* -------------------------------------------------------------------------- */
 .portraitNameValue {
   display: block;
 
