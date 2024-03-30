@@ -63,7 +63,7 @@ const canvas_desired_height = window_height - potraits_container_height - _top -
 
 const ApplicationOptions = {
   canvasContainer: canvasContainer,
-  background: "#fdffde",
+  background: "#e4f2f8",
   // backgroundAlpha: 0,
   // resizeTo: window
   width:  DESIGN_WIDTH,
