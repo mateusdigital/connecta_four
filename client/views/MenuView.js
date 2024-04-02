@@ -21,7 +21,7 @@
 //---------------------------------------------------------------------------~//
 
 // -----------------------------------------------------------------------------
-const AvatarIcon = {
+const _AvatarIcon = {
   view: function (vnode) {
     const options = vnode.attrs || {};
 
@@ -43,7 +43,7 @@ const AvatarIcon = {
 };
 
 // -----------------------------------------------------------------------------
-const ModeType = {
+const _ModeType = {
   view: function (vnode) {
     const options = vnode.attrs || {};
 
@@ -67,14 +67,14 @@ const ModeType = {
 };
 
 // -----------------------------------------------------------------------------
-const MenuPanelView = {
+const _MenuPanelView = {
   view: function (vnode) {
     const options = vnode.attrs || {};
     const iconIndex = options.iconIndex;
 
     return m("div", { "class": "menuPanel" }, [
       m("div", { "class": "menuPanelIconContainer" },
-        m(AvatarIcon, { iconIndex: iconIndex })
+        m(_AvatarIcon, { iconIndex: iconIndex })
       ),
       m("div", { "class": "menuPanelCharmContainer" },
         m("img", { "src": "assets/ui_assets/popup_header.png" })
@@ -85,7 +85,7 @@ const MenuPanelView = {
 };
 
 // -----------------------------------------------------------------------------
-const LogoView = {
+const _LogoView = {
   view: function () {
     return m("div", { "class": "logoContainer" },
       m("img", { "src": "assets/ui_assets/logo.png" })
@@ -94,47 +94,57 @@ const LogoView = {
 };
 
 // -----------------------------------------------------------------------------
-RND.Seed();
 const MoreContentView_iconIndex = RND.Int(1, 7)
-const MoreContentView = {
+const _MoreContentView = {
   view: function () {
     const iconIndex = MoreContentView_iconIndex;
 
     return m("div", { "class": "moreContentContainer" },
-      m(MenuPanelView, { iconIndex: iconIndex })
+      m(_MenuPanelView, { iconIndex: iconIndex })
     );
   }
 };
 
 // -----------------------------------------------------------------------------
-class GameOptionsView {
-  constructor() {
+class _GameOptionsView
+{
+  // ---------------------------------------------------------------------------
+  constructor()
+  {
     this.iconIndex = 1;
     this.modeIndex = 1;
   }
 
-  view() {
+  // ---------------------------------------------------------------------------
+  _OnPlayClicked()
+  {
+
+  }
+
+  // ---------------------------------------------------------------------------
+  view()
+  {
     return m("div", { "class": "gameOptionsContainer" },
-      m(MenuPanelView, { iconIndex: this.iconIndex },
+      m(_MenuPanelView, { iconIndex: this.iconIndex },
         m("div", { "class": "menuPanelContents" }, [
 
           // -------------------------------------------------------------------
           m("div", { "class": "menuPanelSectionContainer" }, [
             m("span", { "class": "menuPanelSubtitle" }, "Your Name"),
-            m("input", { placeholder: "A unnamed player" })
+            m("input", { placeholder: "An unnamed player" })
           ]),
 
           // -------------------------------------------------------------------
           m("div", { "class": "menuPanelSectionContainer" }, [
             m("span", { "class": "menuPanelSubtitle" }, "Your Avatar"),
             m("div", { "class": "avatarSelectionContainer" }, [
-              m(AvatarIcon, { iconIndex: 1, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 1; }, }),
-              m(AvatarIcon, { iconIndex: 2, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 2; }, }),
-              m(AvatarIcon, { iconIndex: 3, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 3; }, }),
-              m(AvatarIcon, { iconIndex: 4, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 4; }, }),
-              m(AvatarIcon, { iconIndex: 5, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 5; }, }),
-              m(AvatarIcon, { iconIndex: 6, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 6; }, }),
-              m(AvatarIcon, { iconIndex: 7, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 7; }, }),
+              m(_AvatarIcon, { iconIndex: 1, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 1; }, }),
+              m(_AvatarIcon, { iconIndex: 2, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 2; }, }),
+              m(_AvatarIcon, { iconIndex: 3, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 3; }, }),
+              m(_AvatarIcon, { iconIndex: 4, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 4; }, }),
+              m(_AvatarIcon, { iconIndex: 5, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 5; }, }),
+              m(_AvatarIcon, { iconIndex: 6, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 6; }, }),
+              m(_AvatarIcon, { iconIndex: 7, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 7; }, }),
             ])
           ]),
 
@@ -142,15 +152,15 @@ class GameOptionsView {
           m("div", { "class": "menuPanelSectionContainer" }, [
             m("span", { "class": "menuPanelSubtitle" }, "Game Mode"),
             m("div", { "class": "modeSelectionContainer" }, [
-              m(ModeType, { modeIndex: 1, selectedMode: this.modeIndex, onclick: ()=>{ this.modeIndex = 1; } }, "multiplayer online", ),
-              m(ModeType, { modeIndex: 2, selectedMode: this.modeIndex, onclick: ()=>{ this.modeIndex = 2; } }, "against computer",   ),
-              m(ModeType, { modeIndex: 3, selectedMode: this.modeIndex, onclick: ()=>{ this.modeIndex = 3; } }, "invite a friend",    ),
+              m(_ModeType, { modeIndex: 1, selectedMode: this.modeIndex, onclick: ()=>{ this.modeIndex = 1; } }, "multiplayer online", ),
+              m(_ModeType, { modeIndex: 2, selectedMode: this.modeIndex, onclick: ()=>{ this.modeIndex = 2; } }, "against computer",   ),
+              m(_ModeType, { modeIndex: 3, selectedMode: this.modeIndex, onclick: ()=>{ this.modeIndex = 3; } }, "invite a friend",    ),
             ])
           ]),
 
           // -------------------------------------------------------------------
           m("div", { "class": "menuPanelSectionContainer" },
-            m("button", { "class": "playButton" }, "Play")
+            m("button", { "class": "playButton", onclick: ()=>{ this._OnPlayClicked(); } }, "Play")
           ),
         ])
       )
@@ -159,13 +169,15 @@ class GameOptionsView {
 };
 
 // -----------------------------------------------------------------------------
-const MenuView = {
-  view: function () {
+const MenuView =
+{
+  view: function ()
+  {
     return m("div", { "class": "menuGridContainer" },
       m("div", { "class": "menuGrid" }, [
-        m(LogoView),
-        m(MoreContentView),
-        m(GameOptionsView)
+        m(_LogoView),
+        m(_MoreContentView),
+        m(_GameOptionsView)
       ])
     );
   }
