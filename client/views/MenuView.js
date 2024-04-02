@@ -40,7 +40,31 @@ const AvatarIcon = {
       onclick: onclick
     });
   }
-}
+};
+
+// -----------------------------------------------------------------------------
+const ModeType = {
+  view: function (vnode) {
+    const options = vnode.attrs || {};
+
+    const modeIndex     = options.modeIndex;
+    const selectedIndex = options.selectedMode;
+
+    const onclick = options.onclick;
+
+    const selected_selector = (modeIndex == selectedIndex)
+      ?  "modeSelectionSelected"
+      :  "modeSelectionNormal";
+
+    return m("span",
+      {
+        class: selected_selector,
+        onclick: onclick
+      },
+      vnode.children
+    );
+  }
+};
 
 // -----------------------------------------------------------------------------
 const MenuPanelView = {
@@ -86,6 +110,7 @@ const MoreContentView = {
 class GameOptionsView {
   constructor() {
     this.iconIndex = 1;
+    this.modeIndex = 1;
   }
 
   view() {
@@ -95,13 +120,13 @@ class GameOptionsView {
 
           // -------------------------------------------------------------------
           m("div", { "class": "menuPanelSectionContainer" }, [
-            m("span", { "class": "menuPanelSubtitle" }, "your name"),
-            m("input")
+            m("span", { "class": "menuPanelSubtitle" }, "Your Name"),
+            m("input", { placeholder: "A unnamed player" })
           ]),
 
           // -------------------------------------------------------------------
           m("div", { "class": "menuPanelSectionContainer" }, [
-            m("span", { "class": "menuPanelSubtitle" }, "your avatar"),
+            m("span", { "class": "menuPanelSubtitle" }, "Your Avatar"),
             m("div", { "class": "avatarSelectionContainer" }, [
               m(AvatarIcon, { iconIndex: 1, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 1; }, }),
               m(AvatarIcon, { iconIndex: 2, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 2; }, }),
@@ -115,11 +140,11 @@ class GameOptionsView {
 
           // -------------------------------------------------------------------
           m("div", { "class": "menuPanelSectionContainer" }, [
-            m("span", { "class": "menuPanelSubtitle" }, "game mode"),
+            m("span", { "class": "menuPanelSubtitle" }, "Game Mode"),
             m("div", { "class": "modeSelectionContainer" }, [
-              m("span", "multiplayer online"),
-              m("span", "against computer"),
-              m("span", "invite a friend")
+              m(ModeType, { modeIndex: 1, selectedMode: this.modeIndex, onclick: ()=>{ this.modeIndex = 1; } }, "multiplayer online", ),
+              m(ModeType, { modeIndex: 2, selectedMode: this.modeIndex, onclick: ()=>{ this.modeIndex = 2; } }, "against computer",   ),
+              m(ModeType, { modeIndex: 3, selectedMode: this.modeIndex, onclick: ()=>{ this.modeIndex = 3; } }, "invite a friend",    ),
             ])
           ]),
 
