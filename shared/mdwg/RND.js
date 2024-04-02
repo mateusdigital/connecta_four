@@ -43,7 +43,11 @@ class RND
             M = m; m = 0;
         }
 
-        let v = RND.__Generator();
+        if(!RND.__Generator) {
+            RND.Seed();
+        }
+
+        const v = RND.__Generator();
         return m + (v * (M - m));
     }
 
