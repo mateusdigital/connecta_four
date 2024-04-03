@@ -13,8 +13,7 @@ class GameManager
       game_mode_index:     DEFAULT_GAME_MODE_INDEX
     }
 
-    this._socket = null;
-
+    this._socket    = null;
     this.match_data = null;
   }
 
@@ -159,10 +158,12 @@ class GameManager
     this._socket = io(conn_str);
 
     // Add the listeners.
+    // Connected
     this._socket.on(NET.Messages.Connected.MSG_NAME, ()=>{
       Debug.Log("Socket connected");
     });
 
+    // Match Start
     this._socket.on(NET.Messages.MatchStarted.MSG_NAME, (data)=>{
       Debug.Log("Match Started received");
       this.match_data = data;
@@ -171,6 +172,13 @@ class GameManager
         resolve();
       }
     });
+
+    // Other Player Disconnect
+    this._socket.on(NET.Messages.OtherPlayerDisconnected.MSG_NAME, ()=>{
+      Debug.Log("Other player disconnected");
+      this._CleanUp();
+      this.StartMenu();
+    })
 
     // Emit that we joined
     NET.SendMessage(
@@ -181,6 +189,14 @@ class GameManager
         this.game_options.game_mode_index
       ),
     );
+  }
+
+
+  // ---------------------------------------------------------------------------
+  _CleanUp()
+  {
+    this._socket    = null;
+    this.match_data = null;
   }
 }
 

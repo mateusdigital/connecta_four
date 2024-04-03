@@ -112,10 +112,8 @@ class MatchMaker
       return;
     }
 
-    const otherPlayer = game.DestroyAndGetRemainingPlayer(disconnectedSocket);
+    game.Destroy(disconnectedSocket);
     Arr.Remove(this._games, game);
-
-    this._waiting_players_list.push(otherPlayer);
   }
 
   // ---------------------------------------------------------------------------

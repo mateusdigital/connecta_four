@@ -59,12 +59,13 @@ class Game
   //
 
   // ---------------------------------------------------------------------------
-  DestroyAndGetRemainingPlayer(socketId)
+  Destroy(socketId)
   {
     if(this._player1.socket.id == socketId) {
       NET.SendMessage(this._player2.socket, new NET.Messages.OtherPlayerDisconnected());
       return this._player2;
     }
+
     else if(this._player2.socket.id == socketId) {
       NET.SendMessage(this._player1.socket, new NET.Messages.OtherPlayerDisconnected());
       return this._player1;
