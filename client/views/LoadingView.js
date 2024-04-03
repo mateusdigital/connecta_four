@@ -1,3 +1,4 @@
+
 //~---------------------------------------------------------------------------//
 //                               *       +                                    //
 //                         '                  |                               //
@@ -9,9 +10,9 @@
 //                 +                         +                                //
 //                      O      *        '       .                             //
 //                                                                            //
-//  File      : GameView.js                                                   //
+//  File      : MenuView.js                                                   //
 //  Project   : connecta-four - client                                        //
-//  Date      : 2024-03-30                                                    //
+//  Date      : 2024-04-02                                                    //
 //  License   : See project's COPYING.TXT for full info.                      //
 //  Author    : mateus.digital <hello@mateus.digital>                         //
 //  Copyright : mateus.digital - 2024                                         //
@@ -20,58 +21,53 @@
 //                                                                            //
 //---------------------------------------------------------------------------~//
 
-// -----------------------------------------------------------------------------
-const _Portrait = {
-  view: function (vnode) {
-    const attrs = vnode.attrs || {};
-
-    //
-    const position     = attrs.position   || "left";
-    const avatar_index = attrs.avatarIndex|| "0";
-
-    let stat_class = "portraitStatsContainer";
-    if(position == "right") {
-      stat_class += " portraitStatsContainerRight";
-    }
-
-    const stats = m("div", { class: stat_class }, [
-      m("span", { class: "portraitNameKey" }, "#1"),
-      m("span", { class: "portraitNameValue" }, "Mateus Mesquita")
-    ]);
-
-    const img_src = GetAvatarLoadUrlWithIndex(avatar_index);
-    const img = m("div", { class: "portraitImageContainer"}, [
-      m("img", { src: img_src })
-    ]);
-
-
-    return m("div", { class: "portraitContainer" }, [
-      ((position == "left") ? stats : img),
-      ((position == "left") ? img : stats),
-    ]);
-  }
-};
 
 // -----------------------------------------------------------------------------
-class GameView
+class LoadingView
 {
   // ---------------------------------------------------------------------------
   constructor(options)
   {
-    this._options = options;
+    this.options = options;
+    console.log(this.options);
+    //
+    const image_index = options.playerAvatarIndex;
+    this._avatarImgSrc = `assets/characters/characters_000${image_index}.png`;
+    //
+    this._playerName = options.playerName || DEFAULT_PLAYER_NAME;
+    //
+    this._gameMode = GAME_MODE_STRS[options.gameModeIndex];
   }
 
   // ---------------------------------------------------------------------------
-  view()
-  {
-    return m("div", {class: "mainContainer"}, [
-      m("div", { id: "background", class: "background" }),
-      m("div", { id: "portraitsContainer", class: "portraitsContainer" }, [
-        m(_Portrait, { avatarIndex: this._options.playerAvatarIndex, position: "left" }),
-        m("div", { class: "vs"}, "vs"),
-        m(_Portrait, { avatarIndex: this._options.playerAvatarIndex, position: "right"}),
-      ]),
-      m("div", { id: "canvasContainer", class: "canvasContainer" }),
-    ])
+  view() {
+    return m("div", { "class": "loadingContainer" },
+      m("div", { "class": "loadingContentContainer" },
+        [
+          // -------------------------------------------------------------------
+          m("div", { "class": "portraitImageContainer" },
+            m("img", { "src": this._avatarImgSrc })
+          ),
+
+          // -------------------------------------------------------------------
+          m("div", { "class": "loadingStatsContainer" },
+            [
+              m("div", { "class": "loadingPlayerStatsContainer" },
+                [
+                  m("span", { "class": "loadingPlayerName" }, this._playerName),
+                  m("span", { "class": "loadingPlayerMode" }, this._gameMode),
+                ]
+              ),
+
+              m("div", { "class": "loadingStateContainer" },
+                m("span", { "class": "loadingState" },
+                  "Loading..."
+                )
+              )
+            ]
+          )
+        ]
+      )
+    )
   }
 };

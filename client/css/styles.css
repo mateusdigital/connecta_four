@@ -29,12 +29,14 @@
 /* -------------------------------------------------------------------------- */
 @font-face {
   font-family: 'HVD Comic Serif Pro';
-  src: url('/assets/font/HVD_Comic_Serif_Pro.otf') format('opentype');
+  /* src: url('/assets/font/HVD_Comic_Serif_Pro.otf') format('opentype'); */
+  src: url('/assets/font/Foo.otf') format('opentype');
 }
 
 @font-face {
   font-family: 'Snow Dream';
-  src: url('/assets/font/SnowDream.TTF') format('truetype');
+  /* src: url('/assets/font/SnowDream.TTF') format('truetype'); */
+  src: url('/assets/font/Foo.otf') format('opentype');
 }
 
 
@@ -317,7 +319,7 @@ html, body, #root {
   scale: 1.0;
 }
 
-
+/* Mode Selection */
 /* -------------------------------------------------------------------------- */
 .modeSelectionContainer {
   display: flex;
@@ -385,6 +387,73 @@ html, body, #root {
 
 /*
  *
+ * Loading
+ *
+*/
+
+/* --------------------------------------------------------------------------- */
+.loadingContainer {
+  height: 100%;
+  align-content: center;
+}
+
+/* --------------------------------------------------------------------------- */
+.loadingContentContainer {
+  justify-content: center;
+  display: flex;
+
+  background-color: white;
+  box-shadow: rgba(0, 0, 0, 0.55) 0px 10px 15px;
+  border:  3px solid black;
+  outline: 6px solid white;
+}
+
+/* --------------------------------------------------------------------------- */
+.loadingStatsContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around
+}
+
+/* --------------------------------------------------------------------------- */
+.loadingPlayerStatsContainer {
+  display: block;
+}
+
+.loadingPlayerName {
+  display: block;
+  font-family: "Snow Dream";
+  font-size: 3rem;
+
+  color: #FFFFFF;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: black;
+
+}
+
+.loadingPlayerMode {
+  display: block;
+  font-family: "Snow Dream";
+  font-size: 1.5rem;
+
+  color: white;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: black;
+}
+
+.loadingState {
+  display: block;
+  font-family: "Snow Dream";
+  font-size: 1.5rem;
+
+  color: white;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: black;
+}
+
+
+/*
+ *
  *  Canvas
  *
 */
@@ -394,7 +463,6 @@ html, body, #root {
   position: relative;
   z-index: 1;
   padding-bottom: 2rem;
-
 
   height: 100%;
 }

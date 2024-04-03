@@ -1,4 +1,16 @@
 // -----------------------------------------------------------------------------
+class _Connected
+{
+  static MSG_NAME = "connection";
+};
+
+// -----------------------------------------------------------------------------
+class _Disconnected
+{
+  static MSG_NAME = "Disonnected";
+};
+
+// -----------------------------------------------------------------------------
 class _OtherPlayerDisconnected
 {
   static MSG_NAME = "OtherPlayerDisconnected";
@@ -46,9 +58,11 @@ class _NewTurn
 }
 
 
-
+// -----------------------------------------------------------------------------
 class _Messages
 {
+  static Connected               = _Connected;
+  static Disonnected             = _Disconnected;
   static OtherPlayerDisconnected = _OtherPlayerDisconnected;
   static MatchStarted            = _MatchStarted;
   static MoveMade                = _MoveMade;
@@ -56,10 +70,29 @@ class _Messages
 };
 
 
+//
+// Public Interface
+//
+
+// -----------------------------------------------------------------------------
 class NET
 {
-  static Messages = _Messages;
+  // ---------------------------------------------------------------------------
+  static ServerPort()
+  {
+    return 5000;
+  }
 
+  // ---------------------------------------------------------------------------
+  static ClientConnectionString()
+  {
+    const server_port = NET.ServerPort();
+    return `ws://localhost:${server_port}`;
+  }
+
+
+  // ---------------------------------------------------------------------------
+  static Messages = _Messages;
   static SendMessage(socket, message)
   {
     socket.emit(message.constructor.MSG_NAME, message);

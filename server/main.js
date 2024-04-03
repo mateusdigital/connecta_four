@@ -26,13 +26,16 @@
 
 // -----------------------------------------------------------------------------
 const path = require("path");
-
+//
 const express          = require("express");
 const { createServer } = require("http");
 const { Server }       = require("socket.io");
-
+//
 const RND = require("../shared/mdwg/RND");
+const NET = require("../shared/net/NET");
+//
 const MatchMaker = require("./meta/MatchMaker");
+
 
 //
 // Create Server
@@ -64,16 +67,16 @@ app.use("/shared", express.static(sharedPath)); // Specify '/shared' as the base
 //
 
 // -----------------------------------------------------------------------------
+RND.Seed(1234);
 const gMatchMaker = new MatchMaker();
 
-RND.Seed(1234);
-
-io.on("connect", (socket)=>{
+io.on(NET.Messages.Connected.MSG_NAME, (socket)=>{
   gMatchMaker.OnClientConnect(socket);
-  socket.on("disconnect", ()=>{
+
+  socket.on(NET.Messages.Disonnected.MSG_NAME, ()=>{
     gMatchMaker.OnClientDisconnect(socket);
   });
-})
+});
 
 // -----------------------------------------------------------------------------
-httpServer.listen(5000);
+httpServer.listen(NET.ServerPort());

@@ -118,7 +118,11 @@ class _GameOptionsView
   // ---------------------------------------------------------------------------
   _OnPlayClicked()
   {
-
+    MountLoadingView({
+      playerName:        this.playerName,
+      playerAvatarIndex: this.iconIndex,
+      gameModeIndex:     this.modeIndex
+    });
   }
 
   // ---------------------------------------------------------------------------
@@ -131,7 +135,7 @@ class _GameOptionsView
           // -------------------------------------------------------------------
           m("div", { "class": "menuPanelSectionContainer" }, [
             m("span", { "class": "menuPanelSubtitle" }, "Your Name"),
-            m("input", { placeholder: "An unnamed player" })
+            m("input", { placeholder: DEFAULT_PLAYER_NAME, value: this.playerName })
           ]),
 
           // -------------------------------------------------------------------
@@ -152,9 +156,9 @@ class _GameOptionsView
           m("div", { "class": "menuPanelSectionContainer" }, [
             m("span", { "class": "menuPanelSubtitle" }, "Game Mode"),
             m("div", { "class": "modeSelectionContainer" }, [
-              m(_ModeType, { modeIndex: 1, selectedMode: this.modeIndex, onclick: ()=>{ this.modeIndex = 1; } }, "multiplayer online", ),
-              m(_ModeType, { modeIndex: 2, selectedMode: this.modeIndex, onclick: ()=>{ this.modeIndex = 2; } }, "against computer",   ),
-              m(_ModeType, { modeIndex: 3, selectedMode: this.modeIndex, onclick: ()=>{ this.modeIndex = 3; } }, "invite a friend",    ),
+              m(_ModeType, { modeIndex: 0, selectedMode: this.modeIndex, onclick: ()=>{ this.modeIndex = 0; } }, GAME_MODE_STRS[0]),
+              m(_ModeType, { modeIndex: 1, selectedMode: this.modeIndex, onclick: ()=>{ this.modeIndex = 1; } }, GAME_MODE_STRS[1]),
+              m(_ModeType, { modeIndex: 2, selectedMode: this.modeIndex, onclick: ()=>{ this.modeIndex = 2; } }, GAME_MODE_STRS[2]),
             ])
           ]),
 
