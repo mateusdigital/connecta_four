@@ -94,7 +94,8 @@ const _LogoView = {
 };
 
 // -----------------------------------------------------------------------------
-const MoreContentView_iconIndex = RND.Int(1, 7)
+const MoreContentView_iconIndex = RND.Int(AVATAR_INDEX_MIN, AVATAR_INDEX_MAX);
+
 const _MoreContentView = {
   view: function () {
     const iconIndex = MoreContentView_iconIndex;
@@ -109,46 +110,69 @@ const _MoreContentView = {
 class _GameOptionsView
 {
   // ---------------------------------------------------------------------------
-  constructor()
-  {
-    this.iconIndex = 1;
-    this.modeIndex = 1;
-  }
-
-  // ---------------------------------------------------------------------------
   _OnPlayClicked()
   {
-    MountLoadingView({
-      playerName:        this.playerName,
-      playerAvatarIndex: this.iconIndex,
-      gameModeIndex:     this.modeIndex
-    });
+    GAME_MANAGER.EndMenu();
   }
 
   // ---------------------------------------------------------------------------
   view()
   {
     return m("div", { "class": "gameOptionsContainer" },
-      m(_MenuPanelView, { iconIndex: this.iconIndex },
+      m(_MenuPanelView, { iconIndex: GAME_MANAGER.game_options.player_avatar_index },
         m("div", { "class": "menuPanelContents" }, [
 
           // -------------------------------------------------------------------
           m("div", { "class": "menuPanelSectionContainer" }, [
             m("span", { "class": "menuPanelSubtitle" }, "Your Name"),
-            m("input", { placeholder: DEFAULT_PLAYER_NAME, value: this.playerName })
+            m("input", {
+              placeholder: DEFAULT_PLAYER_NAME,
+              value: GAME_MANAGER.game_options.player_name,
+              onchange: (event)=> {
+                GAME_MANAGER.game_options.player_name = event.target.value;
+              }
+            })
           ]),
 
           // -------------------------------------------------------------------
           m("div", { "class": "menuPanelSectionContainer" }, [
             m("span", { "class": "menuPanelSubtitle" }, "Your Avatar"),
             m("div", { "class": "avatarSelectionContainer" }, [
-              m(_AvatarIcon, { iconIndex: 1, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 1; }, }),
-              m(_AvatarIcon, { iconIndex: 2, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 2; }, }),
-              m(_AvatarIcon, { iconIndex: 3, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 3; }, }),
-              m(_AvatarIcon, { iconIndex: 4, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 4; }, }),
-              m(_AvatarIcon, { iconIndex: 5, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 5; }, }),
-              m(_AvatarIcon, { iconIndex: 6, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 6; }, }),
-              m(_AvatarIcon, { iconIndex: 7, selectedIndex: this.iconIndex, onclick: ()=>{ this.iconIndex = 7; }, }),
+              m(_AvatarIcon, {
+                iconIndex: 1,
+                selectedIndex: GAME_MANAGER.game_options.player_avatar_index,
+                onclick: ()=>{ GAME_MANAGER.game_options.player_avatar_index = 1; }, }
+              ),
+              m(_AvatarIcon, {
+                iconIndex: 2,
+                selectedIndex: GAME_MANAGER.game_options.player_avatar_index,
+                onclick: ()=>{ GAME_MANAGER.game_options.player_avatar_index = 2; }, }
+              ),
+              m(_AvatarIcon, {
+                iconIndex: 3,
+                selectedIndex: GAME_MANAGER.game_options.player_avatar_index,
+                onclick: ()=>{ GAME_MANAGER.game_options.player_avatar_index = 3; }, }
+              ),
+              m(_AvatarIcon, {
+                iconIndex: 4,
+                selectedIndex: GAME_MANAGER.game_options.player_avatar_index,
+                onclick: ()=>{ GAME_MANAGER.game_options.player_avatar_index = 4; }, }
+              ),
+              m(_AvatarIcon, {
+                iconIndex: 5,
+                selectedIndex: GAME_MANAGER.game_options.player_avatar_index,
+                onclick: ()=>{ GAME_MANAGER.game_options.player_avatar_index = 5; }, }
+              ),
+              m(_AvatarIcon, {
+                iconIndex: 6,
+                selectedIndex: GAME_MANAGER.game_options.player_avatar_index,
+                onclick: ()=>{ GAME_MANAGER.game_options.player_avatar_index = 6; }, }
+              ),
+              m(_AvatarIcon, {
+                iconIndex: 7,
+                selectedIndex: GAME_MANAGER.game_options.player_avatar_index,
+                onclick: ()=>{ GAME_MANAGER.game_options.player_avatar_index = 7; }, }
+              ),
             ])
           ]),
 
@@ -156,9 +180,25 @@ class _GameOptionsView
           m("div", { "class": "menuPanelSectionContainer" }, [
             m("span", { "class": "menuPanelSubtitle" }, "Game Mode"),
             m("div", { "class": "modeSelectionContainer" }, [
-              m(_ModeType, { modeIndex: 0, selectedMode: this.modeIndex, onclick: ()=>{ this.modeIndex = 0; } }, GAME_MODE_STRS[0]),
-              m(_ModeType, { modeIndex: 1, selectedMode: this.modeIndex, onclick: ()=>{ this.modeIndex = 1; } }, GAME_MODE_STRS[1]),
-              m(_ModeType, { modeIndex: 2, selectedMode: this.modeIndex, onclick: ()=>{ this.modeIndex = 2; } }, GAME_MODE_STRS[2]),
+              m(_ModeType, {
+                modeIndex: 0,
+                selectedMode:  GAME_MANAGER.game_options.game_mode_index,
+                onclick: ()=>{ GAME_MANAGER.game_options.game_mode_index = 0; }
+              },
+                GAME_MODE_STRS[0]
+              ),
+              m(_ModeType, {
+                modeIndex: 1,
+                selectedMode:  GAME_MANAGER.game_options.game_mode_index,
+                onclick: ()=>{ GAME_MANAGER.game_options.game_mode_index = 1; } },
+                GAME_MODE_STRS[1]
+              ),
+              m(_ModeType, {
+                modeIndex: 2,
+                selectedMode:  GAME_MANAGER.game_options.game_mode_index,
+                onclick: ()=>{ GAME_MANAGER.game_options.game_mode_index = 2; } },
+                GAME_MODE_STRS[2]
+              ),
             ])
           ]),
 
@@ -173,9 +213,16 @@ class _GameOptionsView
 };
 
 // -----------------------------------------------------------------------------
-const MenuView =
+class MenuView
 {
-  view: function ()
+  // ---------------------------------------------------------------------------
+  constructor()
+  {
+
+  }
+
+  // ---------------------------------------------------------------------------
+  view()
   {
     return m("div", { "class": "menuGridContainer" },
       m("div", { "class": "menuGrid" }, [

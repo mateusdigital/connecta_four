@@ -26,8 +26,8 @@ const _Portrait = {
     const attrs = vnode.attrs || {};
 
     //
-    const position     = attrs.position   || "left";
-    const avatar_index = attrs.avatarIndex|| "0";
+    const position    = attrs.position   || "left";
+    const player_data = attrs.playerData || null;
 
     let stat_class = "portraitStatsContainer";
     if(position == "right") {
@@ -35,11 +35,11 @@ const _Portrait = {
     }
 
     const stats = m("div", { class: stat_class }, [
-      m("span", { class: "portraitNameKey" }, "#1"),
-      m("span", { class: "portraitNameValue" }, "Mateus Mesquita")
+      m("span", { class: "portraitNameKey" },  `#${player_data.playerIndex}`),
+      m("span", { class: "portraitNameValue" }, `${player_data.playerName}`)
     ]);
 
-    const img_src = GetAvatarLoadUrlWithIndex(avatar_index);
+    const img_src = GetAvatarLoadUrlWithIndex(player_data.playerAvatarIndex);
     const img = m("div", { class: "portraitImageContainer"}, [
       m("img", { src: img_src })
     ]);
@@ -56,20 +56,20 @@ const _Portrait = {
 class GameView
 {
   // ---------------------------------------------------------------------------
-  constructor(options)
-  {
-    this._options = options;
-  }
-
-  // ---------------------------------------------------------------------------
   view()
   {
     return m("div", {class: "mainContainer"}, [
       m("div", { id: "background", class: "background" }),
       m("div", { id: "portraitsContainer", class: "portraitsContainer" }, [
-        m(_Portrait, { avatarIndex: this._options.playerAvatarIndex, position: "left" }),
+        m(_Portrait, {
+          playerData: GAME_MANAGER.match_data.playerData,
+          position: "left"
+        }),
         m("div", { class: "vs"}, "vs"),
-        m(_Portrait, { avatarIndex: this._options.playerAvatarIndex, position: "right"}),
+        m(_Portrait, {
+          playerData: GAME_MANAGER.match_data.opponentData,
+          position: "right"
+        }),
       ]),
       m("div", { id: "canvasContainer", class: "canvasContainer" }),
     ])

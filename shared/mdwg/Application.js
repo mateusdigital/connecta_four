@@ -49,7 +49,6 @@ class Application
     // -------------------------------------------------------------------------
     static async Create(options)
     {
-
         const container = options.canvasContainer || document.body;
 
         g_App = new PIXI.Application();

@@ -17,6 +17,18 @@ class _OtherPlayerDisconnected
 };
 
 // -----------------------------------------------------------------------------
+class _PlayerJoin
+{
+  static MSG_NAME = "PlayerJoin";
+
+  constructor(playerAvatarIndex, playerName, gameModeIndex)
+  {
+    this.playerAvatarIndex = playerAvatarIndex;
+    this.playerName        = playerName;
+    this.gameModeIndex     = gameModeIndex;
+  }
+}
+// -----------------------------------------------------------------------------
 class _MatchStarted
 {
   static MSG_NAME = "MatchStart";
@@ -64,6 +76,7 @@ class _Messages
   static Connected               = _Connected;
   static Disonnected             = _Disconnected;
   static OtherPlayerDisconnected = _OtherPlayerDisconnected;
+  static PlayerJoin              = _PlayerJoin;
   static MatchStarted            = _MatchStarted;
   static MoveMade                = _MoveMade;
   static NewTurn                 = _NewTurn;

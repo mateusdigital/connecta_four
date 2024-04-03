@@ -45,3 +45,15 @@ class Utils
         return v == null || v == undefined;
     }
 }
+
+// -----------------------------------------------------------------------------
+function Clamp(value, min, max)
+{
+    if(value < min) {
+        return min;
+    }
+    else if(value > max) {
+        return max;
+    }
+    return value;
+}

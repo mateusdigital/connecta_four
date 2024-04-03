@@ -23,6 +23,7 @@
 // -----------------------------------------------------------------------------
 const Arr = require("../../shared/mdwg/Array");
 const Game = require("../game/Game");
+const Player = require("../game/Player");
 
 // -----------------------------------------------------------------------------
 class MatchMaker
@@ -30,9 +31,9 @@ class MatchMaker
   // -----------------------------------------------------------------------------
   constructor()
   {
-    this._clients     = new Map();
-    this._waitingList = [];
-    this._games       = [];
+    this._clients              = new Map();
+    this._waiting_players_list = [];
+    this._games                = [];
   }
 
 
@@ -46,10 +47,8 @@ class MatchMaker
     console.log("Client Connected", socket.id);
 
     this._clients.set(socket.id, socket);
-    this._waitingList.push(socket);
 
     this._PrintStats();
-    this._TryToCreateGame();
   }
 
   // ---------------------------------------------------------------------------
@@ -59,14 +58,24 @@ class MatchMaker
 
     this._clients.delete(disconnectedSocket.id);
 
-    Arr.RemoveIf(this._waitingList, (otherSocket) => {
-      return otherSocket.id == disconnectedSocket.id
+    Arr.RemoveIf(this._waiting_players_list, (p) => {
+      return p.socket.id == disconnectedSocket.id
     });
 
-    this._DestroyGame(disconnectedSocket.id);
+    this._TryDestroyGame(disconnectedSocket.id);
 
     this._PrintStats();
   }
+
+  // ---------------------------------------------------------------------------
+  OnPlayerJoin(socket, data)
+  {
+    const player = new Player(socket, data);
+
+    this._waiting_players_list.push(player);
+    this._TryToCreateGame();
+  }
+
 
   //
   // Game Handling
@@ -75,16 +84,16 @@ class MatchMaker
   // ---------------------------------------------------------------------------
   _TryToCreateGame()
   {
-    if(this._waitingList.length < 2) {
+    if(this._waiting_players_list.length < 2) {
       console.log("Not enough players...");
       return;
     }
 
     console.log("Creating Game!");
-    const player1Socket = Arr.PopFront(this._waitingList);
-    const player2Socket = Arr.PopFront(this._waitingList);
+    const player1 = Arr.PopFront(this._waiting_players_list);
+    const player2 = Arr.PopFront(this._waiting_players_list);
 
-    const game = new Game(player1Socket, player2Socket);
+    const game = new Game(player1, player2);
     this._games.push(game);
 
     game.StartGame();
@@ -93,7 +102,7 @@ class MatchMaker
   }
 
   // ---------------------------------------------------------------------------
-  _DestroyGame(disconnectedSocket)
+  _TryDestroyGame(disconnectedSocket)
   {
     const game = Arr.FindIf(this._games, (game)=>{
       return game.IsPlayerSocketId(disconnectedSocket);
@@ -103,17 +112,17 @@ class MatchMaker
       return;
     }
 
-    const otherPlayerSocket = game.DestroyAndGetRemainingPlayer(disconnectedSocket);
+    const otherPlayer = game.DestroyAndGetRemainingPlayer(disconnectedSocket);
     Arr.Remove(this._games, game);
 
-    this._waitingList.push(otherPlayerSocket);
+    this._waiting_players_list.push(otherPlayer);
   }
 
   // ---------------------------------------------------------------------------
   _PrintStats()
   {
     console.log("Total Clients:", this._clients.size);
-    console.log("Waiting List :", this._waitingList.length);
+    console.log("Waiting List :", this._waiting_players_list.length);
     console.log("Games:        ", this._games.length);
   }
 }

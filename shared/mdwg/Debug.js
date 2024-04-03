@@ -9,9 +9,9 @@
 //                 +                         +                                //
 //                      O      *        '       .                             //
 //                                                                            //
-//  File      : Player.js                                                     //
-//  Project   : connecta-four - sever                                         //
-//  Date      : 2024-03-29                                                    //
+//  File      : Debug.js                                                      //
+//  Project   : mdwg                                                          //
+//  Date      : 2024-04-03                                                    //
 //  License   : See project's COPYING.TXT for full info.                      //
 //  Author    : mateus.digital <hello@mateus.digital>                         //
 //  Copyright : mateus.digital - 2024                                         //
@@ -21,19 +21,16 @@
 //---------------------------------------------------------------------------~//
 
 // -----------------------------------------------------------------------------
-const RND = require("../../shared/mdwg/RND");
-const PlayerData = require("../../shared/net/PlayerData");
-
-// -----------------------------------------------------------------------------
-class Player
+class Debug
 {
-  // ---------------------------------------------------------------------------
-  constructor(socket, data)
-  {
-    this.socket     = socket;
-    this.playerData = new PlayerData(data.playerName, data.playerAvatarIndex);
-  }
-};
+    // -------------------------------------------------------------------------
+    static Log(...args)
+    {
+      console.log(...args);
+    }
+}
 
 // -----------------------------------------------------------------------------
-module.exports = Player;
+if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
+    module.exports = Debug;
+}

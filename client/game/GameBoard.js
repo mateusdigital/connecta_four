@@ -1,6 +1,4 @@
 
-const INVALID_PLAYER_INDEX = -1;
-
 // -----------------------------------------------------------------------------
 class GameBoard
   extends PIXI.NineSlicePlane

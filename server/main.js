@@ -73,6 +73,11 @@ const gMatchMaker = new MatchMaker();
 io.on(NET.Messages.Connected.MSG_NAME, (socket)=>{
   gMatchMaker.OnClientConnect(socket);
 
+  //
+  socket.on(NET.Messages.PlayerJoin.MSG_NAME, (data)=> {
+    gMatchMaker.OnPlayerJoin(socket, data);
+  });
+
   socket.on(NET.Messages.Disonnected.MSG_NAME, ()=>{
     gMatchMaker.OnClientDisconnect(socket);
   });

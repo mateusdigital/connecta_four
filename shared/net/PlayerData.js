@@ -21,10 +21,20 @@
 //---------------------------------------------------------------------------~//
 
 // -----------------------------------------------------------------------------
+let Constants = null;
+
+if (typeof module !== "undefined" && typeof module.exports !== "undefined") {
+  Constants = require("../Constants");
+} else {
+  Constants = _Constants;
+}
+
+// -----------------------------------------------------------------------------
 class PlayerData
 {
   constructor(name, avatar)
   {
+    this.playerIndex       = Constants.INVALID_PLAYER_INDEX;
     this.playerName        = name;
     this.playerAvatarIndex = avatar;
   }

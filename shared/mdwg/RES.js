@@ -25,19 +25,24 @@
 class RES
 {
     // -------------------------------------------------------------------------
-    static async LoadResources(...args)
+    static async LoadResourcesWithCallback(callback,...args)
     {
-        let expanded_args = [];
-        for(let i = 0; i < args.length; ++i) {
-            const curr_arg = args[i];
-            if(Array.isArray(curr_arg)) {
-                expanded_args = expanded_args.concat(curr_arg);
-            } else {
-                expanded_args.push(curr_arg);
-            }
-        }
+      let expanded_args = [];
+      for(let i = 0; i < args.length; ++i) {
+          const curr_arg = args[i];
+          if(Array.isArray(curr_arg)) {
+              expanded_args = expanded_args.concat(curr_arg);
+          } else {
+              expanded_args.push(curr_arg);
+          }
+      }
 
-        RES._RESOURCES = await PIXI.Assets.load(expanded_args);
+      PIXI.Assets
+        .load(expanded_args)
+        .then((loaded_resources) => {
+          RES._RESOURCES = loaded_resources;
+          callback();
+        });
     }
 
     // -------------------------------------------------------------------------

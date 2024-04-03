@@ -26,27 +26,25 @@
 class LoadingView
 {
   // ---------------------------------------------------------------------------
-  constructor(options)
+  constructor()
   {
-    this.options = options;
-    console.log(this.options);
+    const opt = GAME_MANAGER.game_options;
+
     //
-    const image_index = options.playerAvatarIndex;
-    this._avatarImgSrc = `assets/characters/characters_000${image_index}.png`;
-    //
-    this._playerName = options.playerName || DEFAULT_PLAYER_NAME;
-    //
-    this._gameMode = GAME_MODE_STRS[options.gameModeIndex];
+    this._avatar_img_src = GetAvatarLoadUrlWithIndex(opt.player_avatar_index || DEFAULT_AVATAR_INDEX);
+    this._player_name    = opt.player_name || DEFAULT_PLAYER_NAME;
+    this._game_mode      = GAME_MODE_STRS[opt.game_mode_index || DEFAULT_GAME_MODE_INDEX];
   }
 
   // ---------------------------------------------------------------------------
-  view() {
+  view()
+  {
     return m("div", { "class": "loadingContainer" },
       m("div", { "class": "loadingContentContainer" },
         [
           // -------------------------------------------------------------------
           m("div", { "class": "portraitImageContainer" },
-            m("img", { "src": this._avatarImgSrc })
+            m("img", { "src": this._avatar_img_src })
           ),
 
           // -------------------------------------------------------------------
@@ -54,8 +52,8 @@ class LoadingView
             [
               m("div", { "class": "loadingPlayerStatsContainer" },
                 [
-                  m("span", { "class": "loadingPlayerName" }, this._playerName),
-                  m("span", { "class": "loadingPlayerMode" }, this._gameMode),
+                  m("span", { "class": "loadingPlayerName" }, this._player_name),
+                  m("span", { "class": "loadingPlayerMode" }, this._game_mode),
                 ]
               ),
 

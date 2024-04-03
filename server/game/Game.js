@@ -27,15 +27,19 @@ const NET = require("../../shared/net/NET");
 const GameBoard = require("./GameBoard");
 const Player    = require("./Player");
 
+
 // -----------------------------------------------------------------------------
 class Game
 {
   // ---------------------------------------------------------------------------
-  constructor(player1Socket, player2Socket)
+  constructor(player1, player2)
   {
-    this._player1 = new Player(player1Socket);
-    this._player2 = new Player(player2Socket);
+    this._player1 = player1;
+    this._player2 = player2;
     this._players = [ this._player1, this._player2 ];
+
+    this._player1.playerData.playerIndex = 0;
+    this._player2.playerData.playerIndex = 1;
 
     this._boardColumns  = 7;
     this._boardRows     = 5;
@@ -59,11 +63,11 @@ class Game
   {
     if(this._player1.socket.id == socketId) {
       NET.SendMessage(this._player2.socket, new NET.Messages.OtherPlayerDisconnected());
-      return this._player2.socket;
+      return this._player2;
     }
     else if(this._player2.socket.id == socketId) {
       NET.SendMessage(this._player1.socket, new NET.Messages.OtherPlayerDisconnected());
-      return this._player1.socket;
+      return this._player1;
     }
   }
 
@@ -112,6 +116,7 @@ class Game
     ));
   }
 
+  // ---------------------------------------------------------------------------
   _MakeMove(msgData)
   {
     console.log(msgData);
