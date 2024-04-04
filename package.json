@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon server/main.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "babel": "babel client/views_src --out-dir client/views --source-maps --watch"
   },
   "author": "mateus.digital <hello@mateus.digital>",
   "license": "ISC",
@@ -13,5 +14,11 @@
     "express": "^4.19.2",
     "nodemon": "^3.1.0",
     "socket.io": "^4.7.5"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.24.1",
+    "@babel/core": "^7.24.4",
+    "@babel/plugin-transform-react-jsx": "^7.23.4",
+    "@babel/preset-env": "^7.24.4"
   }
 }

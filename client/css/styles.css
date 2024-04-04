@@ -127,6 +127,12 @@ html, body, #root {
   overflow: hidden;
 }
 
+.centerContent {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
 
 /*
  *
@@ -396,38 +402,21 @@ html, body, #root {
 
 /* --------------------------------------------------------------------------- */
 .loadingContainer {
-  height: 100%;
-  align-content: center;
-}
-
-/* --------------------------------------------------------------------------- */
-.loadingContentContainer {
+  display: flex;
+  align-items: center;
   justify-content: center;
-  display: flex;
 
-  box-shadow: rgba(0, 0, 0, 0.55) 0px 10px 15px;
-  border:  3px solid black;
-  outline: 6px solid var(--panel-background-color);
+  height: fit-content;
 
-  background-color: var(--panel-background-color);
-}
-
-/* --------------------------------------------------------------------------- */
-.loadingStatsContainer {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around
-}
-
-/* --------------------------------------------------------------------------- */
-.loadingPlayerStatsContainer {
-  display: block;
+  text-align: center;
 }
 
 .loadingPlayerName {
   display: block;
+
   font-family: "Snow Dream";
-  font-size: 3rem;
+  font-size: 2.2rem;
+
 
   color: #FFFFFF;
   -webkit-text-stroke-width: 2px;
@@ -435,7 +424,7 @@ html, body, #root {
 
 }
 
-.loadingPlayerMode {
+.loadingGameMode {
   display: block;
   font-family: "Snow Dream";
   font-size: 1.5rem;
@@ -553,9 +542,9 @@ html, body, #root {
 .portraitStatsContainer {
   display: flex;
   flex-direction: column;
-  text-align: right;
   align-items: flex-end;
 
+  text-align: right;
   /* background-color: #ff02ee; */
 }
 
