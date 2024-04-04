@@ -22,7 +22,6 @@
 //                                                                            //
 //---------------------------------------------------------------------------~//
 
-
 // -----------------------------------------------------------------------------
 class EndGameView
 {
@@ -46,7 +45,7 @@ class EndGameView
       <div class="loadingContainer">
         <MenuPanelView iconIndex={this._avatar_index}>
           <div class="menuPanelContents">
-            {/* -------------------------------------------------------------  */}
+            {/* -----------------------------------------------------------  */}
             <div class="menuPanelSectionContainer">
               <span class="menuPanelSubtitle">{this._end_status}</span>
               <span class="endGamePlayerName">{this._player_name}</span>

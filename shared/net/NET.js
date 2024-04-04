@@ -69,6 +69,17 @@ class _NewTurn
   }
 }
 
+// -----------------------------------------------------------------------------
+class _GameOver
+{
+  static MSG_NAME = "GameOver";
+
+  constructor(isWinner)
+  {
+    this.isWinner = isWinner;
+  }
+}
+
 
 // -----------------------------------------------------------------------------
 class _Messages
@@ -80,6 +91,7 @@ class _Messages
   static MatchStarted            = _MatchStarted;
   static MoveMade                = _MoveMade;
   static NewTurn                 = _NewTurn;
+  static GameOver                = _GameOver;
 };
 
 

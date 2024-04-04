@@ -1,3 +1,4 @@
+
 class GameManager
 {
   // ---------------------------------------------------------------------------
@@ -148,6 +149,25 @@ class GameManager
     });
   }
 
+  // ---------------------------------------------------------------------------
+  _OnGameOver(msgData)
+  {
+    this.end_game_options = {
+      status: msgData.isWinner ? END_GAME_STATUS_VICTORY : END_GAME_STATUS_DEFEAT,
+      reason: msgData.isWinner ? "You have won!!!" : "You have lost",
+    }
+
+    m.mount(this._root_element, {
+      oncreate: (vnode)=>{
+      },
+
+      view: function() {
+        return m(new EndGameView());
+      }
+    });
+  }
+
+
   //
   // Helper Methods
   //
@@ -199,7 +219,11 @@ class GameManager
       Debug.Log("Other player disconnected");
       this._CleanUp();
       this._OnOtherPlayerDisconnected();
-    })
+    });
+
+    this._socket.on(NET.Messages.GameOver.MSG_NAME, (data)=>{
+      this._OnGameOver(data);
+    });
 
     // Emit that we joined
     NET.SendMessage(

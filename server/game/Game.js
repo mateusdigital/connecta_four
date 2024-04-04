@@ -21,6 +21,7 @@
 //---------------------------------------------------------------------------~//
 
 // -----------------------------------------------------------------------------
+const Debug = require("../../shared/mdwg/Debug");
 const RND = require("../../shared/mdwg/RND");
 const NET = require("../../shared/net/NET");
 
@@ -51,6 +52,7 @@ class Game
       this._players
     );
 
+    this.OnEndCallback = null;
     this._AddListenCallbacks();
   }
 
@@ -120,17 +122,54 @@ class Game
   // ---------------------------------------------------------------------------
   _MakeMove(msgData)
   {
-    console.log(msgData);
-    this._gameBoard.MakeMove(msgData.column, msgData.row, this._currentPlayer);
+    Debug.Log(msgData);
 
-    const isGameOver = this._gameBoard.CheckGameOver();
-    if(isGameOver) {
+    // Check Valid Move
+    const valid_move = this._gameBoard.MakeMove(
+      msgData.column,
+      msgData.row,
+      this._currentPlayer
+    );
+
+    if(!valid_move) {
+      const same_turn_msg = new NET.Messages.NewTurn(
+        this._currentPlayer,
+        this._gameBoard.grid
+      );
+
+      NET.SendMessage(this._player1.socket, same_turn_msg);
+      NET.SendMessage(this._player2.socket, same_turn_msg);
 
       return;
     }
 
-    this._currentPlayer = (this._currentPlayer + 1) % 2;
 
+    // Check Game Over
+    const is_game_over = this._gameBoard.CheckGameOver();
+    if(is_game_over)
+    {
+      const winner_player = this._gameBoard.winnerPlayer;
+      const winner_data   = winner_player.playerData;
+      const player1_data  = this._player1.playerData;
+      const player2_data  = this._player2.playerData;
+
+      NET.SendMessage(
+        this._player1.socket,
+        new NET.Messages.GameOver(winner_data.playerIndex == player1_data.playerIndex)
+      );
+
+      NET.SendMessage(
+        this._player2.socket,
+        new NET.Messages.GameOver(winner_data.playerIndex == player2_data.playerIndex)
+      );
+
+      this.OnEndCallback(this);
+      return;
+    }
+
+
+    // Make a New Turn
+    this._currentPlayer = (this._currentPlayer + 1) % 2;
     const new_turn_msg = new NET.Messages.NewTurn(
       this._currentPlayer,
       this._gameBoard.grid

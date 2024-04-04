@@ -97,8 +97,21 @@ class MatchMaker
     this._games.push(game);
 
     game.StartGame();
+    game.OnEndCallback = (game)=>{
+      this._DestroyEndedGame(game);
+    };
 
     this._PrintStats();
+  }
+
+  // ---------------------------------------------------------------------------
+  _DestroyEndedGame(game)
+  {
+    if(!game) {
+      return;
+    }
+
+    Arr.Remove(this._games, game);
   }
 
   // ---------------------------------------------------------------------------
@@ -108,12 +121,8 @@ class MatchMaker
       return game.IsPlayerSocketId(disconnectedSocket);
     });
 
-    if(!game) {
-      return;
-    }
-
     game.Destroy(disconnectedSocket);
-    Arr.Remove(this._games, game);
+    this._DestroyEndedGame(game);
   }
 
   // ---------------------------------------------------------------------------
