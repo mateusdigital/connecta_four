@@ -111,6 +111,7 @@ class GameManager
   //
   // Helper Methods
   //
+
   // ---------------------------------------------------------------------------
   async _OnMatchStarted()
   {
@@ -119,7 +120,7 @@ class GameManager
 
       const app_options = {
         canvasContainer: canvasContainer,
-        background: "#e4f2f8",
+        background: "#fff8e5",
         width:  DESIGN_WIDTH,
         height: this._CalculateCanvasSize()
       };
