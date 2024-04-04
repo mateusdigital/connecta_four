@@ -17,7 +17,7 @@ function _toPrimitive(t, r) { if ("object" != _typeof(t) || !t) return t; var e 
 //                 +                         +                                //
 //                      O      *        '       .                             //
 //                                                                            //
-//  File      : MenuView.js                                                   //
+//  File      : LoadingView.js                                                //
 //  Project   : connecta-four - client                                        //
 //  Date      : 2024-04-02                                                    //
 //  License   : See project's COPYING.TXT for full info.                      //
@@ -35,9 +35,9 @@ var LoadingView = /*#__PURE__*/function () {
     var opt = GAME_MANAGER.game_options;
 
     //
-    this._avatar_img_src = GetAvatarLoadUrlWithIndex(opt.player_avatar_index || DEFAULT_AVATAR_INDEX);
-    this._player_name = opt.player_name || DEFAULT_PLAYER_NAME;
-    this._game_mode = GAME_MODE_STRS[opt.game_mode_index || DEFAULT_GAME_MODE_INDEX];
+    this._avatar_img_src = GetAvatarLoadUrlWithIndex(opt.playerAvatarIndex || DEFAULT_AVATAR_INDEX);
+    this._player_name = opt.playerName || DEFAULT_PLAYER_NAME;
+    this._game_mode = GAME_MODE_STRS[opt.gameAvatarIndex || DEFAULT_GAME_MODE_INDEX];
   }
 
   // ---------------------------------------------------------------------------
@@ -49,7 +49,7 @@ var LoadingView = /*#__PURE__*/function () {
       }, m("div", {
         "class": "loadingContainer"
       }, m(MenuPanelView, {
-        iconIndex: GAME_MANAGER.game_options.player_avatar_index
+        iconIndex: GAME_MANAGER.game_options.playerAvatarIndex
       }, m("div", {
         "class": "menuPanelContents"
       }, m("div", {

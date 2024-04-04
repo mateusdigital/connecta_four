@@ -105,12 +105,12 @@ var _GameOptionsView = /*#__PURE__*/function () {
     value: function view() {
       var _this = this;
       var on_change_callback = function on_change_callback(event) {
-        GAME_MANAGER.game_options.player_name = event.target.value;
+        GAME_MANAGER.game_options.playerName = event.target.value;
       };
       return m("div", {
         "class": "gameOptionsContainer"
       }, m(MenuPanelView, {
-        iconIndex: GAME_MANAGER.game_options.player_avatar_index
+        iconIndex: GAME_MANAGER.game_options.playerAvatarIndex
       }, m("div", {
         "class": "menuPanelContents"
       }, m("div", {
@@ -119,7 +119,7 @@ var _GameOptionsView = /*#__PURE__*/function () {
         "class": "menuPanelSubtitle"
       }, "Your Name"), m("input", {
         placeholder: DEFAULT_PLAYER_NAME,
-        value: GAME_MANAGER.game_options.player_name,
+        value: GAME_MANAGER.game_options.playerName,
         onchange: on_change_callback
       })), m("div", {
         "class": "menuPanelSectionContainer"
@@ -129,45 +129,45 @@ var _GameOptionsView = /*#__PURE__*/function () {
         "class": "avatarSelectionContainer"
       }, m(AvatarIcon, {
         iconIndex: "1",
-        selectedIndex: GAME_MANAGER.game_options.player_avatar_index,
+        selectedIndex: GAME_MANAGER.game_options.playerAvatarIndex,
         onclick: function onclick() {
-          GAME_MANAGER.game_options.player_avatar_index = 1;
+          GAME_MANAGER.game_options.playerAvatarIndex = 1;
         }
       }), m(AvatarIcon, {
         iconIndex: "2",
-        selectedIndex: GAME_MANAGER.game_options.player_avatar_index,
+        selectedIndex: GAME_MANAGER.game_options.playerAvatarIndex,
         onclick: function onclick() {
-          GAME_MANAGER.game_options.player_avatar_index = 2;
+          GAME_MANAGER.game_options.playerAvatarIndex = 2;
         }
       }), m(AvatarIcon, {
         iconIndex: "3",
-        selectedIndex: GAME_MANAGER.game_options.player_avatar_index,
+        selectedIndex: GAME_MANAGER.game_options.playerAvatarIndex,
         onclick: function onclick() {
-          GAME_MANAGER.game_options.player_avatar_index = 3;
+          GAME_MANAGER.game_options.playerAvatarIndex = 3;
         }
       }), m(AvatarIcon, {
         iconIndex: "4",
-        selectedIndex: GAME_MANAGER.game_options.player_avatar_index,
+        selectedIndex: GAME_MANAGER.game_options.playerAvatarIndex,
         onclick: function onclick() {
-          GAME_MANAGER.game_options.player_avatar_index = 4;
+          GAME_MANAGER.game_options.playerAvatarIndex = 4;
         }
       }), m(AvatarIcon, {
         iconIndex: "5",
-        selectedIndex: GAME_MANAGER.game_options.player_avatar_index,
+        selectedIndex: GAME_MANAGER.game_options.playerAvatarIndex,
         onclick: function onclick() {
-          GAME_MANAGER.game_options.player_avatar_index = 5;
+          GAME_MANAGER.game_options.playerAvatarIndex = 5;
         }
       }), m(AvatarIcon, {
         iconIndex: "6",
-        selectedIndex: GAME_MANAGER.game_options.player_avatar_index,
+        selectedIndex: GAME_MANAGER.game_options.playerAvatarIndex,
         onclick: function onclick() {
-          GAME_MANAGER.game_options.player_avatar_index = 6;
+          GAME_MANAGER.game_options.playerAvatarIndex = 6;
         }
       }), m(AvatarIcon, {
         iconIndex: "7",
-        selectedIndex: GAME_MANAGER.game_options.player_avatar_index,
+        selectedIndex: GAME_MANAGER.game_options.playerAvatarIndex,
         onclick: function onclick() {
-          GAME_MANAGER.game_options.player_avatar_index = 7;
+          GAME_MANAGER.game_options.playerAvatarIndex = 7;
         }
       }))), m("div", {
         "class": "menuPanelSectionContainer"
@@ -177,21 +177,21 @@ var _GameOptionsView = /*#__PURE__*/function () {
         "class": "modeSelectionContainer"
       }, m(_ModeType, {
         modeIndex: "0",
-        selectedModeIndex: GAME_MANAGER.game_options.game_mode_index,
+        selectedModeIndex: GAME_MANAGER.game_options.gameModeIndex,
         onclick: function onclick() {
-          GAME_MANAGER.game_options.game_mode_index = 0;
+          GAME_MANAGER.game_options.gameModeIndex = 0;
         }
       }, GAME_MODE_STRS[0]), m(_ModeType, {
         modeIndex: "1",
-        selectedModeIndex: GAME_MANAGER.game_options.game_mode_index,
+        selectedModeIndex: GAME_MANAGER.game_options.gameModeIndex,
         onclick: function onclick() {
-          GAME_MANAGER.game_options.game_mode_index = 1;
+          GAME_MANAGER.game_options.gameModeIndex = 1;
         }
       }, GAME_MODE_STRS[1]), m(_ModeType, {
         modeIndex: "2",
-        selectedModeIndex: GAME_MANAGER.game_options.game_mode_index,
+        selectedModeIndex: GAME_MANAGER.game_options.gameModeIndex,
         onclick: function onclick() {
-          GAME_MANAGER.game_options.game_mode_index = 2;
+          GAME_MANAGER.game_options.gameModeIndex = 2;
         }
       }, GAME_MODE_STRS[2]))), m("div", {
         "class": "menuPanelSectionContainer"

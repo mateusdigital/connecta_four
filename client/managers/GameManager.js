@@ -8,13 +8,15 @@ class GameManager
     this._root_element = document.getElementById("content");
 
     this.game_options = {
-      player_name:         DEFAULT_PLAYER_NAME,
-      player_avatar_index: DEFAULT_AVATAR_INDEX,
-      game_mode_index:     DEFAULT_GAME_MODE_INDEX
+      playerName:        DEFAULT_PLAYER_NAME,
+      playerAvatarIndex: DEFAULT_AVATAR_INDEX,
+      gameModeIndex:     DEFAULT_GAME_MODE_INDEX
     }
 
     this._socket    = null;
     this.match_data = null;
+
+    this.end_game_options = null;
   }
 
   //
@@ -47,7 +49,7 @@ class GameManager
     m.mount(this._root_element, {
       oncreate: (vnode) => {
         // Load Resources
-        this._game_is_ready_promise = new Promise((resolve, reject) => {
+        this._game_is_ready_promise = new Promise((gameReadyResolve, reject) => {
 
           if(!this._resources_loaded) {
             Debug.Log("Loading resources");
@@ -59,14 +61,14 @@ class GameManager
 
                 if(this.match_data) {
                   Debug.Log("Match data also loaded - resoving");
-                  resolve();
+                  gameReadyResolve();
                 }
               },
               TEXTURES_TO_LOAD
             );
           }
 
-          this._CreateSockets(resolve, reject);
+          this._CreateSockets(gameReadyResolve, reject);
         }).then(()=>{
           this.StartGame();
         })
@@ -99,7 +101,7 @@ class GameManager
 
     m.mount(this._root_element, {
       oncreate: (vnode)=>{
-        this._OnMatchStarted();
+        this._OnGameStarted();
       },
 
       view: function() {
@@ -108,12 +110,8 @@ class GameManager
     });
   }
 
-  //
-  // Helper Methods
-  //
-
   // ---------------------------------------------------------------------------
-  async _OnMatchStarted()
+  async _OnGameStarted()
   {
       this._canvasContainer    = document.getElementById("canvasContainer");
       this._portraitsContainer = document.getElementById("portraitsContainer");
@@ -133,6 +131,28 @@ class GameManager
   }
 
   // ---------------------------------------------------------------------------
+  _OnOtherPlayerDisconnected()
+  {
+    this.end_game_options = {
+      status:  END_GAME_STATUS_VICTORY,
+      reason:  "Other player has disconnected",
+    }
+
+    m.mount(this._root_element, {
+      oncreate: (vnode)=>{
+      },
+
+      view: function() {
+        return m(new EndGameView());
+      }
+    });
+  }
+
+  //
+  // Helper Methods
+  //
+
+  // ---------------------------------------------------------------------------
   _CalculateCanvasSize()
   {
     const potraits_container_height = this._portraitsContainer.clientHeight;
@@ -150,7 +170,7 @@ class GameManager
   }
 
   // ---------------------------------------------------------------------------
-  _CreateSockets(resolve, reject)
+  _CreateSockets(gameReadyResolve, reject)
   {
     Debug.Log("Creating sockets");
 
@@ -170,7 +190,7 @@ class GameManager
       this.match_data = data;
       if(this._resources_loaded) {
         Debug.Log("Resources also loaded - resolving...");
-        resolve();
+        gameReadyResolve();
       }
     });
 
@@ -178,16 +198,16 @@ class GameManager
     this._socket.on(NET.Messages.OtherPlayerDisconnected.MSG_NAME, ()=>{
       Debug.Log("Other player disconnected");
       this._CleanUp();
-      this.StartMenu();
+      this._OnOtherPlayerDisconnected();
     })
 
     // Emit that we joined
     NET.SendMessage(
       this._socket,
       new NET.Messages.PlayerJoin(
-        this.game_options.player_avatar_index,
-        this.game_options.player_name,
-        this.game_options.game_mode_index
+        this.game_options.playerAvatarIndex,
+        this.game_options.playerName,
+        this.game_options.gameModeIndex
       ),
     );
   }

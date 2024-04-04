@@ -1,4 +1,5 @@
 
+
 //~---------------------------------------------------------------------------//
 //                               *       +                                    //
 //                         '                  |                               //
@@ -10,9 +11,9 @@
 //                 +                         +                                //
 //                      O      *        '       .                             //
 //                                                                            //
-//  File      : LoadingView.js                                                //
+//  File      : EndGameView.js                                                //
 //  Project   : connecta-four - client                                        //
-//  Date      : 2024-04-02                                                    //
+//  Date      : 2024-04-04                                                    //
 //  License   : See project's COPYING.TXT for full info.                      //
 //  Author    : mateus.digital <hello@mateus.digital>                         //
 //  Copyright : mateus.digital - 2024                                         //
@@ -23,17 +24,19 @@
 
 
 // -----------------------------------------------------------------------------
-class LoadingView
+class EndGameView
 {
   // ---------------------------------------------------------------------------
   constructor()
   {
-    const opt = GAME_MANAGER.game_options;
+    const game_opt = GAME_MANAGER.game_options;
+    const end_opt  = GAME_MANAGER.end_game_options;
 
     //
-    this._avatar_img_src = GetAvatarLoadUrlWithIndex(opt.playerAvatarIndex || DEFAULT_AVATAR_INDEX);
-    this._player_name    = opt.playerName || DEFAULT_PLAYER_NAME;
-    this._game_mode      = GAME_MODE_STRS[opt.gameAvatarIndex || DEFAULT_GAME_MODE_INDEX];
+    this._avatar_index = game_opt.playerAvatarIndex || DEFAULT_AVATAR_INDEX;
+    this._player_name  = game_opt.playerName || DEFAULT_PLAYER_NAME;
+    this._end_status   = end_opt.status;
+    this._end_reason   = end_opt.reason;
   }
 
   // ---------------------------------------------------------------------------
@@ -41,19 +44,23 @@ class LoadingView
   {
     return <div class="centerContent">
       <div class="loadingContainer">
-        <MenuPanelView iconIndex={GAME_MANAGER.game_options.playerAvatarIndex}>
+        <MenuPanelView iconIndex={this._avatar_index}>
           <div class="menuPanelContents">
             {/* -------------------------------------------------------------  */}
             <div class="menuPanelSectionContainer">
-              <span class="menuPanelSubtitle">Name</span>
-              <span class="loadingPlayerName">{this._player_name}</span>
+              <span class="menuPanelSubtitle">{this._end_status}</span>
+              <span class="endGamePlayerName">{this._player_name}</span>
             </div>
             <div class="menuPanelSectionContainer">
-              <span class="menuPanelSubtitle">Game Mode</span>
-              <span class="loadingGameMode">{this._game_mode}</span>
+              <span class="endGameReason">{this._end_reason}</span>
             </div>
             <div class="menuPanelSectionContainer">
-              <span class="loadingState">Loading...</span>
+              <button
+                class="endGameButton"
+                onclick={ ()=> { GAME_MANAGER.StartMenu(); } }
+                >
+                Go to Menu
+              </button>
             </div>
           </div>
         </MenuPanelView>

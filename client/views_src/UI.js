@@ -20,8 +20,8 @@ class MenuPanelView
 {
   view(vnode)
   {
-    const options  = vnode.attrs   || {};
-    const children = vnode.children|| {};
+    const options  = vnode.attrs    || {};
+    const children = vnode.children || {};
 
     return <div class="menuPanel">
       <div class="menuPanelIconContainer">

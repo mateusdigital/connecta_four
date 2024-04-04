@@ -51,12 +51,21 @@
   --background-color2: #4e54c8;
   --background-color1: #6267ce;
 
+    /* Play Button */
   --play-button-shadow-normal-size:  8px;
   --play-button-shadow-pressed-size: 3px;
   --play-button-translate-y-pressed: 5px;
 
   --play-button-color: #6ab935;
   --play-button-shadow-color: #437322;
+
+    /* End Game Button */
+  --end-game-button-shadow-normal-size:  8px;
+  --end-game-button-shadow-pressed-size: 3px;
+  --end-game-button-translate-y-pressed: 5px;
+
+  --end-game-button-color: #6ab935;
+  --end-game-button-shadow-color: #437322;
 
   --panel-background-color: #fcf3dc;
   /* --background-color1: #bde03c;
@@ -421,7 +430,6 @@ html, body, #root {
   color: #FFFFFF;
   -webkit-text-stroke-width: 2px;
   -webkit-text-stroke-color: black;
-
 }
 
 .loadingGameMode {
@@ -445,12 +453,14 @@ html, body, #root {
 }
 
 
+
 /*
  *
- *  Canvas
+ * Game
  *
 */
 
+/* Canvas */
 /* -------------------------------------------------------------------------- */
 .canvasContainer {
   position: relative;
@@ -472,13 +482,7 @@ html, body, #root {
   outline: 6px solid var(--panel-background-color);
 }
 
-
-/*
- *
- *  Portraits
- *
-*/
-
+/* Portraits */
 /* -------------------------------------------------------------------------- */
 .portraitsContainer {
   display: flex;
@@ -576,4 +580,55 @@ html, body, #root {
   color: #FFFFFF;
   -webkit-text-stroke-width: 3px;
   -webkit-text-stroke-color: black;
+}
+
+
+/*
+*
+* End Game
+*
+*/
+
+/* -------------------------------------------------------------------------- */
+.endGamePlayerName {
+  display: block;
+
+  font-family: "Snow Dream";
+  font-size: 2.2rem;
+
+
+  color: #FFFFFF;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: black;
+}
+
+.endGameReason {
+  display: block;
+
+  font-family: "Snow Dream";
+  font-size: 1.5rem;
+
+  color: #FFFFFF;
+  -webkit-text-stroke-width: 2px;
+  -webkit-text-stroke-color: black;
+}
+
+.endGameButton {
+  padding: 1.5rem;
+
+  font-family: 'Snow Dream';
+  font-size: 3rem;
+
+  color: white;
+  background-color: var(--end-game-button-color);
+  box-shadow: var(--end-game-button-shadow-color) 0px var(--end-game-button-shadow-normal-size) 0;
+
+  border: none;
+  border-radius: 1.5rem;
+  /* background-color: green; */
+}
+
+.endGameButton:active {
+  transform: translateY(var(--end-game-button-translate-y-pressed));
+  box-shadow: var(--end-game-button-shadow-color) 0px var(--end-game-button-shadow-pressed-size) 0;
 }

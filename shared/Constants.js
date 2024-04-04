@@ -43,6 +43,10 @@ const GAME_BOARD_TILES_X = 7;
 const DESIGN_HEIGHT   = 800;
 const DESIGN_WIDTH    = 1024;
 
+// -----------------------------------------------------------------------------
+const END_GAME_STATUS_DEFEAT  = "Defeat";
+const END_GAME_STATUS_VICTORY = "Victory";
+
 
 const _Constants = {
   GAME_MODE_STRS,
@@ -56,7 +60,9 @@ const _Constants = {
   GAME_BOARD_TILES_Y,
   GAME_BOARD_TILES_X,
   DESIGN_HEIGHT,
-  DESIGN_WIDTH
+  DESIGN_WIDTH,
+  END_GAME_STATUS_DEFEAT,
+  END_GAME_STATUS_VICTORY
 };
 
 // -----------------------------------------------------------------------------
